@@ -113,17 +113,36 @@ export function Sidebar() {
         </button>
 
         {/* Profile */}
-        {!collapsed && (
-          <NavLink to="/settings" className="flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-white/5 transition-colors">
-            <div className="w-8 h-8 rounded-full bg-primary-500 flex items-center justify-center text-white font-bold text-sm shrink-0">
-              {profile.name.charAt(0)}
+        <NavLink
+          to="/settings"
+          className={cn(
+            'flex items-center gap-3 px-2 py-2 rounded-xl hover:bg-white/10 transition-all group',
+            collapsed && 'justify-center px-0'
+          )}
+          title="Account Settings"
+        >
+          {profile.avatar_url ? (
+            <img
+              src={profile.avatar_url}
+              alt={profile.name}
+              className="w-8 h-8 rounded-full object-cover ring-2 ring-primary-400/50 shrink-0 group-hover:ring-primary-400 transition-all"
+            />
+          ) : (
+            <div className="w-8 h-8 rounded-full bg-gradient-to-tr from-primary-600 to-indigo-500 flex items-center justify-center text-white font-bold text-xs shrink-0 shadow-sm">
+              {profile.name.split(' ').map(n => n[0]).join('').slice(0, 2)}
             </div>
-            <div className="overflow-hidden">
-              <p className="text-white text-sm font-medium truncate">{profile.name}</p>
-              <p className="text-slate-400 text-xs truncate">{profile.year} · {profile.branch}</p>
+          )}
+          {!collapsed && (
+            <div className="overflow-hidden min-w-0">
+              <p className="text-white text-sm font-semibold truncate group-hover:text-primary-300 transition-colors">
+                {profile.name}
+              </p>
+              <p className="text-slate-400 text-xs truncate">
+                {profile.year} · {profile.branch}
+              </p>
             </div>
-          </NavLink>
-        )}
+          )}
+        </NavLink>
       </div>
     </aside>
   )
@@ -215,6 +234,7 @@ export function MobileNav() {
 export function TopBar() {
   const location = useLocation()
   const { theme, setTheme } = useAppStore()
+  const profile = demoStore.getProfile()
 
   const pageTitle = NAV_ITEMS.find(n =>
     n.to === '/' ? location.pathname === '/' : location.pathname.startsWith(n.to)
@@ -223,17 +243,33 @@ export function TopBar() {
   return (
     <header className="md:hidden sticky top-0 z-30 bg-white dark:bg-slate-900 border-b border-slate-200 dark:border-slate-700 flex items-center justify-between px-4 py-3">
       <div className="flex items-center gap-2.5">
-        <div className="w-7 h-7 rounded-lg bg-primary-500 flex items-center justify-center">
+        <div className="w-7 h-7 rounded-lg bg-primary-500 flex items-center justify-center shadow-sm">
           <GraduationCap className="w-4 h-4 text-white" />
         </div>
-        <p className="font-semibold text-slate-900 dark:text-slate-100">{pageTitle}</p>
+        <p className="font-semibold text-slate-900 dark:text-slate-100 text-sm">{pageTitle}</p>
       </div>
-      <button
-        onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
-        className="p-2 rounded-lg text-slate-500 hover:bg-slate-100 dark:hover:bg-slate-700 transition-colors"
-      >
-        {theme === 'dark' ? <Sun className="w-4 h-4" /> : <Moon className="w-4 h-4" />}
-      </button>
+      <div className="flex items-center gap-2">
+        <button
+          onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
+          className="p-1.5 rounded-lg text-slate-500 hover:bg-slate-100 dark:hover:bg-slate-700 transition-colors"
+          aria-label="Toggle theme"
+        >
+          {theme === 'dark' ? <Sun className="w-4 h-4" /> : <Moon className="w-4 h-4" />}
+        </button>
+        <NavLink to="/settings" className="shrink-0" title="Profile Settings">
+          {profile.avatar_url ? (
+            <img
+              src={profile.avatar_url}
+              alt={profile.name}
+              className="w-7 h-7 rounded-full object-cover ring-1 ring-primary-500"
+            />
+          ) : (
+            <div className="w-7 h-7 rounded-full bg-primary-600 text-white font-bold text-xs flex items-center justify-center">
+              {profile.name.charAt(0)}
+            </div>
+          )}
+        </NavLink>
+      </div>
     </header>
   )
 }

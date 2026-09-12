@@ -71,12 +71,15 @@ export default function SettingsPage() {
   }
 
   const clearAll = () => {
-    if (confirm('Are you sure? This will delete all your tasks and inbox items.')) {
-      localStorage.removeItem('ccc_tasks')
-      localStorage.removeItem('ccc_inbox')
-      localStorage.removeItem('ccc_messages')
-      toast.success('Data cleared. Reload to see fresh demo data.')
+    if (confirm('Are you sure? This will delete all tasks, inbox notices, and AI chat history for a 100% clean slate.')) {
+      demoStore.clearAllData()
+      toast.success('Clean slate activated! All demo & current items cleared.')
     }
+  }
+
+  const loadSamples = () => {
+    demoStore.loadSampleData()
+    toast.success('Starter sample items loaded!')
   }
 
   const tabs = [
@@ -115,20 +118,30 @@ export default function SettingsPage() {
           {activeTab === 'profile' && (
             <div className="card p-6 space-y-4">
               <h2 className="section-title">Personal Profile</h2>
-              <div className="flex items-center gap-4">
-                <div className="w-16 h-16 rounded-2xl bg-primary-500 flex items-center justify-center text-white font-bold text-2xl">
-                  {profile.name.charAt(0)}
-                </div>
-                <div>
-                  <p className="font-semibold text-slate-900 dark:text-slate-100">{profile.name}</p>
-                  <p className="text-sm text-slate-500">{profile.year} · {profile.branch}</p>
-                  <p className="text-sm text-slate-400">{profile.college}</p>
+              <div className="flex items-center gap-4 p-3 bg-slate-50 dark:bg-slate-800/60 rounded-xl border border-slate-200 dark:border-slate-700">
+                {profile.avatar_url ? (
+                  <img
+                    src={profile.avatar_url}
+                    alt={profile.name}
+                    className="w-16 h-16 rounded-2xl object-cover ring-2 ring-primary-500 shrink-0"
+                  />
+                ) : (
+                  <div className="w-16 h-16 rounded-2xl bg-gradient-to-tr from-primary-600 to-indigo-600 flex items-center justify-center text-white font-bold text-2xl shrink-0">
+                    {profile.name.charAt(0)}
+                  </div>
+                )}
+                <div className="overflow-hidden min-w-0">
+                  <p className="font-bold text-slate-900 dark:text-slate-100 text-base truncate">{profile.name}</p>
+                  <p className="text-sm text-slate-500 truncate">{profile.email || 'mrdeb3006@gmail.com'}</p>
+                  <p className="text-xs text-primary-600 dark:text-primary-400 font-medium truncate mt-0.5">{profile.year} · {profile.branch}</p>
                 </div>
               </div>
               <Input label="Full Name" value={profile.name} onChange={e => update('name', e.target.value)} id="settings-name" />
-              <Textarea label="Personal Goals" value={profile.goals} onChange={e => update('goals', e.target.value)} rows={2} id="settings-goals" placeholder="What are you working towards?" />
+              <Input label="Email Address" value={profile.email || ''} onChange={e => update('email', e.target.value)} id="settings-email" placeholder="e.g. deb@example.com" />
+              <Input label="Avatar Image URL" value={profile.avatar_url || ''} onChange={e => update('avatar_url', e.target.value)} id="settings-avatar" placeholder="https://github.com/..." />
+              <Textarea label="Personal Goals / Focus" value={profile.goals} onChange={e => update('goals', e.target.value)} rows={2} id="settings-goals" placeholder="What are you working towards?" />
               <div>
-                <p className="label mb-2">Interests</p>
+                <p className="label mb-2">Interests & Specializations</p>
                 <div className="flex flex-wrap gap-2">
                   {INTEREST_OPTIONS.map(interest => (
                     <button
@@ -136,8 +149,8 @@ export default function SettingsPage() {
                       onClick={() => toggleInterest(interest)}
                       className={`px-3 py-1.5 rounded-full text-xs font-medium border transition-all ${
                         profile.interests.includes(interest)
-                          ? 'bg-primary-500 border-primary-500 text-white'
-                          : 'border-slate-200 dark:border-slate-600 text-slate-600 dark:text-slate-400 hover:border-primary-300'
+                          ? 'bg-primary-500 border-primary-500 text-white shadow-sm'
+                          : 'border-slate-200 dark:border-slate-700 text-slate-600 dark:text-slate-400 hover:border-primary-300'
                       }`}
                     >
                       {interest}
@@ -225,22 +238,26 @@ export default function SettingsPage() {
           {activeTab === 'data' && (
             <div className="space-y-4">
               <div className="card p-6 space-y-4">
-                <h2 className="section-title">Data & Privacy</h2>
+                <h2 className="section-title">Data & Backup</h2>
                 <div className="p-3 bg-green-50 dark:bg-green-900/20 rounded-xl text-xs text-green-700 dark:text-green-300">
-                  ✅ All your data is stored locally on this device. No data is sent to any server without your explicit action.
+                  ✅ All your notices, tasks, and settings are stored locally on your device in your browser.
                 </div>
-                <div className="p-3 bg-blue-50 dark:bg-blue-900/20 rounded-xl text-xs text-blue-700 dark:text-blue-300">
-                  🔒 AI requests are processed through the backend. Your notice text is sent for analysis, but not stored permanently.
+                <div className="flex flex-col sm:flex-row gap-3">
+                  <Button variant="secondary" onClick={exportData} className="flex-1">
+                    <Download className="w-4 h-4" /> Export All Data (JSON)
+                  </Button>
+                  <Button variant="secondary" onClick={loadSamples} className="flex-1">
+                    Load Starter Sample Pack
+                  </Button>
                 </div>
-                <Button variant="secondary" onClick={exportData} className="w-full">
-                  <Download className="w-4 h-4" /> Export All Data (JSON)
-                </Button>
               </div>
-              <div className="card p-6 space-y-3">
-                <h2 className="text-base font-semibold text-red-600 dark:text-red-400">Danger Zone</h2>
-                <p className="text-xs text-slate-500">This will delete all your tasks and inbox items. Your profile will be kept.</p>
+              <div className="card p-6 space-y-3 border border-red-200 dark:border-red-900/40">
+                <h2 className="text-base font-semibold text-red-600 dark:text-red-400">Clean Slate / Reset</h2>
+                <p className="text-xs text-slate-500">
+                  Wipes all demo & current tasks, notices, and AI chats for a completely clean semester start. Your personal profile is preserved.
+                </p>
                 <Button variant="danger" onClick={clearAll}>
-                  <Trash2 className="w-4 h-4" /> Clear All Data
+                  <Trash2 className="w-4 h-4" /> Clean Slate (Wipe All Tasks & Notices)
                 </Button>
               </div>
             </div>

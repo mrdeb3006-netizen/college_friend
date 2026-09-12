@@ -117,7 +117,7 @@ export default function Onboarding() {
             <div className="space-y-4">
               <Input
                 label="Your Name"
-                placeholder="e.g. Arjun Sharma"
+                placeholder="e.g. Debendranath Bera"
                 value={data.name}
                 onChange={e => update('name', e.target.value)}
                 autoFocus

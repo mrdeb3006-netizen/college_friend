@@ -47,6 +47,9 @@ export default function Dashboard() {
   const urgentCount = tasks.filter(t => t.priority === 'urgent_important' && t.status !== 'completed').length
   const completedToday = tasks.filter(t => t.status === 'completed').length
   const unreadInbox = inbox.filter(i => i.status === 'unread').length
+  const pendingTasks = tasks.filter(t => t.status !== 'completed').length
+  const totalTasks = tasks.length
+  const totalInbox = inbox.length
 
   const toggleTask = (task: Task) => {
     demoStore.updateTask(task.id, {
@@ -64,29 +67,96 @@ export default function Dashboard() {
         {/* Header */}
         <div className="flex items-start justify-between">
           <div>
-            <p className="text-sm text-slate-500 dark:text-slate-400">
+            <p className="text-xs font-medium text-slate-500 dark:text-slate-400">
               {format(new Date(), 'EEEE, MMMM d, yyyy')}
             </p>
             <h1 className="text-2xl font-bold text-slate-900 dark:text-slate-100 mt-0.5">
               {greeting}, {profile.name.split(' ')[0]} 👋
             </h1>
+            <p className="text-xs text-primary-600 dark:text-primary-400 font-medium mt-0.5">
+              {profile.college} · {profile.branch} ({profile.year})
+            </p>
           </div>
 
           {/* Stats pills */}
           <div className="hidden sm:flex gap-2">
             {urgentCount > 0 && (
-              <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800">
+              <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 shadow-xs">
                 <Flame className="w-3.5 h-3.5 text-red-500" />
                 <span className="text-xs font-semibold text-red-600 dark:text-red-400">{urgentCount} urgent</span>
               </div>
             )}
             {unreadInbox > 0 && (
-              <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-primary-50 dark:bg-primary-900/20 border border-primary-200 dark:border-primary-800">
+              <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-primary-50 dark:bg-primary-900/20 border border-primary-200 dark:border-primary-800 shadow-xs">
                 <span className="text-xs font-semibold text-primary-600 dark:text-primary-400">{unreadInbox} unread</span>
               </div>
             )}
           </div>
         </div>
+
+        {/* Metrics Strip */}
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+          <div className="card p-3.5 flex items-center justify-between border-l-4 border-l-primary-500">
+            <div>
+              <p className="text-xs font-medium text-slate-500 dark:text-slate-400">Pending Tasks</p>
+              <p className="text-xl font-bold text-slate-900 dark:text-slate-100 mt-0.5">{pendingTasks}</p>
+            </div>
+            <div className="w-9 h-9 rounded-xl bg-primary-50 dark:bg-primary-950/40 flex items-center justify-center text-primary-600 dark:text-primary-400">
+              <CheckCircle2 className="w-5 h-5" />
+            </div>
+          </div>
+          <div className="card p-3.5 flex items-center justify-between border-l-4 border-l-red-500">
+            <div>
+              <p className="text-xs font-medium text-slate-500 dark:text-slate-400">Urgent Focus</p>
+              <p className="text-xl font-bold text-red-600 dark:text-red-400 mt-0.5">{urgentCount}</p>
+            </div>
+            <div className="w-9 h-9 rounded-xl bg-red-50 dark:bg-red-950/40 flex items-center justify-center text-red-500">
+              <Flame className="w-5 h-5" />
+            </div>
+          </div>
+          <div className="card p-3.5 flex items-center justify-between border-l-4 border-l-teal-500">
+            <div>
+              <p className="text-xs font-medium text-slate-500 dark:text-slate-400">College Notices</p>
+              <p className="text-xl font-bold text-slate-900 dark:text-slate-100 mt-0.5">{totalInbox}</p>
+            </div>
+            <div className="w-9 h-9 rounded-xl bg-teal-50 dark:bg-teal-950/40 flex items-center justify-center text-teal-600 dark:text-teal-400">
+              <Calendar className="w-5 h-5" />
+            </div>
+          </div>
+          <div className="card p-3.5 flex items-center justify-between border-l-4 border-l-emerald-500">
+            <div>
+              <p className="text-xs font-medium text-slate-500 dark:text-slate-400">Completed Tasks</p>
+              <p className="text-xl font-bold text-emerald-600 dark:text-emerald-400 mt-0.5">{completedToday}</p>
+            </div>
+            <div className="w-9 h-9 rounded-xl bg-emerald-50 dark:bg-emerald-950/40 flex items-center justify-center text-emerald-500">
+              <Star className="w-5 h-5" />
+            </div>
+          </div>
+        </div>
+
+        {/* Clean slate welcome banner if empty */}
+        {totalTasks === 0 && totalInbox === 0 && (
+          <div className="card p-6 bg-gradient-to-br from-primary-500/10 via-indigo-500/5 to-purple-500/10 border border-primary-200/50 dark:border-primary-800/40 space-y-4">
+            <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+              <div>
+                <h2 className="text-lg font-bold text-slate-900 dark:text-slate-100">
+                  Ready for the semester, Debendranath! 🎓
+                </h2>
+                <p className="text-sm text-slate-600 dark:text-slate-400 mt-1 max-w-xl">
+                  Your workspace is clean. Capture messy WhatsApp announcements, syllabus notices, or deadlines, and let AI structure them into actionable tasks.
+                </p>
+              </div>
+              <div className="flex gap-2.5 shrink-0">
+                <Button variant="primary" onClick={() => setShowAddInbox(true)}>
+                  <Plus className="w-4 h-4" /> Add Notice
+                </Button>
+                <Button variant="secondary" onClick={() => setShowAddTask(true)}>
+                  <Plus className="w-4 h-4" /> Create Task
+                </Button>
+              </div>
+            </div>
+          </div>
+        )}
 
         {/* Quick Add */}
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">

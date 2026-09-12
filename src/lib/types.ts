@@ -21,6 +21,8 @@ export interface UserProfile {
   id: string
   user_id: string
   name: string
+  email?: string
+  avatar_url?: string
   college: string
   year: string
   branch: string

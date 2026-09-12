@@ -14,6 +14,9 @@ import {
   Menu,
   X,
   ChevronRight,
+  Search,
+  Plus,
+  Sparkles,
 } from 'lucide-react'
 import { cn } from '../../lib/utils'
 import { useAppStore } from '../../stores/appStore'
@@ -229,42 +232,95 @@ export function MobileNav() {
 }
 
 // ============================================================
-// Top Bar (mobile header)
+// Top Bar (Unified Desktop & Mobile Header)
 // ============================================================
-export function TopBar() {
+export function TopBar({
+  onOpenPalette,
+  onOpenAddTask,
+  onOpenAddInbox,
+}: {
+  onOpenPalette?: () => void
+  onOpenAddTask?: () => void
+  onOpenAddInbox?: () => void
+}) {
   const location = useLocation()
   const { theme, setTheme } = useAppStore()
   const profile = demoStore.getProfile()
 
-  const pageTitle = NAV_ITEMS.find(n =>
+  const currentNav = NAV_ITEMS.find(n =>
     n.to === '/' ? location.pathname === '/' : location.pathname.startsWith(n.to)
-  )?.label ?? 'College Command Center'
+  )
+  const pageTitle = currentNav?.label ?? 'Command Center'
+  const PageIcon = currentNav?.icon ?? LayoutDashboard
 
   return (
-    <header className="md:hidden sticky top-0 z-30 bg-white dark:bg-slate-900 border-b border-slate-200 dark:border-slate-700 flex items-center justify-between px-4 py-3">
-      <div className="flex items-center gap-2.5">
-        <div className="w-7 h-7 rounded-lg bg-primary-500 flex items-center justify-center shadow-sm">
-          <GraduationCap className="w-4 h-4 text-white" />
+    <header className="sticky top-0 z-30 bg-white/80 dark:bg-slate-900/80 backdrop-blur-md border-b border-slate-200/80 dark:border-slate-800/80 flex items-center justify-between px-4 lg:px-6 py-2.5 transition-all">
+      {/* Left: Active view indicator */}
+      <div className="flex items-center gap-3 min-w-0">
+        <div className="w-8 h-8 rounded-xl bg-primary-50 dark:bg-primary-950/50 border border-primary-100 dark:border-primary-900/50 flex items-center justify-center text-primary-600 dark:text-primary-400 shrink-0">
+          <PageIcon className="w-4 h-4" />
         </div>
-        <p className="font-semibold text-slate-900 dark:text-slate-100 text-sm">{pageTitle}</p>
+        <div>
+          <h2 className="font-bold text-slate-900 dark:text-slate-100 text-sm leading-tight truncate">{pageTitle}</h2>
+          <p className="text-[11px] text-slate-400 font-medium hidden sm:block">College Command Center</p>
+        </div>
       </div>
+
+      {/* Center: Command Palette Trigger */}
+      <button
+        onClick={onOpenPalette}
+        className="flex items-center gap-2.5 px-3 py-1.5 rounded-xl border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-800/60 text-slate-400 hover:border-primary-300 dark:hover:border-primary-600 hover:text-slate-700 dark:hover:text-slate-200 transition-all text-xs w-44 sm:w-64 md:w-72 lg:w-80 shadow-2xs group"
+        title="Quick Search & Command Palette (Ctrl+K or Cmd+K)"
+      >
+        <Search className="w-3.5 h-3.5 text-slate-400 group-hover:text-primary-500 transition-colors shrink-0" />
+        <span className="flex-1 text-left truncate">Search or jump to...</span>
+        <kbd className="hidden sm:inline-flex items-center gap-0.5 px-1.5 py-0.5 text-[10px] font-mono text-slate-400 bg-white dark:bg-slate-800 rounded border border-slate-200 dark:border-slate-700">
+          ⌘K
+        </kbd>
+      </button>
+
+      {/* Right: Quick actions & Profile */}
       <div className="flex items-center gap-2">
+        {onOpenAddTask && (
+          <button
+            onClick={onOpenAddTask}
+            className="hidden sm:inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold bg-primary-500 hover:bg-primary-600 active:bg-primary-700 text-white shadow-xs transition-all"
+            title="Create Task"
+          >
+            <Plus className="w-3.5 h-3.5" />
+            <span>Task</span>
+          </button>
+        )}
+
+        {onOpenAddInbox && (
+          <button
+            onClick={onOpenAddInbox}
+            className="hidden md:inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 border border-slate-200 dark:border-slate-700 transition-all"
+            title="Capture Notice"
+          >
+            <Plus className="w-3.5 h-3.5 text-orange-500" />
+            <span>Notice</span>
+          </button>
+        )}
+
         <button
           onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
-          className="p-1.5 rounded-lg text-slate-500 hover:bg-slate-100 dark:hover:bg-slate-700 transition-colors"
+          className="p-2 rounded-xl text-slate-500 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors"
           aria-label="Toggle theme"
+          title={theme === 'dark' ? 'Switch to Light Mode' : 'Switch to Dark Mode'}
         >
-          {theme === 'dark' ? <Sun className="w-4 h-4" /> : <Moon className="w-4 h-4" />}
+          {theme === 'dark' ? <Sun className="w-4 h-4 text-amber-400" /> : <Moon className="w-4 h-4" />}
         </button>
-        <NavLink to="/settings" className="shrink-0" title="Profile Settings">
+
+        <NavLink to="/settings" className="shrink-0 ml-1" title="Account Settings">
           {profile.avatar_url ? (
             <img
               src={profile.avatar_url}
               alt={profile.name}
-              className="w-7 h-7 rounded-full object-cover ring-1 ring-primary-500"
+              className="w-8 h-8 rounded-full object-cover ring-2 ring-primary-500/40 hover:ring-primary-500 transition-all"
             />
           ) : (
-            <div className="w-7 h-7 rounded-full bg-primary-600 text-white font-bold text-xs flex items-center justify-center">
+            <div className="w-8 h-8 rounded-full bg-primary-600 text-white font-bold text-xs flex items-center justify-center shadow-xs">
               {profile.name.charAt(0)}
             </div>
           )}

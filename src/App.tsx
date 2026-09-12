@@ -15,10 +15,30 @@ import CopilotPage from './pages/Copilot'
 import SettingsPage from './pages/Settings'
 import Onboarding from './pages/Onboarding'
 
+import CommandPalette from './components/ui/CommandPalette'
+import AddTaskModal from './components/tasks/AddTaskModal'
+import AddInboxModal from './components/inbox/AddInboxModal'
+
 // ============================================================
 // Protected App Layout
 // ============================================================
 function AppLayout() {
+  const [paletteOpen, setPaletteOpen] = React.useState(false)
+  const [addTaskOpen, setAddTaskOpen] = React.useState(false)
+  const [addInboxOpen, setAddInboxOpen] = React.useState(false)
+
+  // Global Ctrl+K / Cmd+K listener
+  React.useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === 'k') {
+        e.preventDefault()
+        setPaletteOpen(v => !v)
+      }
+    }
+    window.addEventListener('keydown', handleKeyDown)
+    return () => window.removeEventListener('keydown', handleKeyDown)
+  }, [])
+
   return (
     <div className="flex h-screen bg-slate-100 dark:bg-slate-950 overflow-hidden">
       {/* Desktop Sidebar */}
@@ -26,8 +46,12 @@ function AppLayout() {
 
       {/* Main content */}
       <div className="flex-1 flex flex-col min-w-0 overflow-hidden">
-        {/* Mobile header */}
-        <TopBar />
+        {/* Header */}
+        <TopBar
+          onOpenPalette={() => setPaletteOpen(true)}
+          onOpenAddTask={() => setAddTaskOpen(true)}
+          onOpenAddInbox={() => setAddInboxOpen(true)}
+        />
 
         {/* Page content */}
         <main className="flex-1 overflow-hidden">
@@ -46,6 +70,26 @@ function AppLayout() {
         {/* Mobile bottom nav */}
         <MobileNav />
       </div>
+
+      {/* Command Palette */}
+      <CommandPalette
+        open={paletteOpen}
+        onClose={() => setPaletteOpen(false)}
+        onOpenAddTask={() => setAddTaskOpen(true)}
+        onOpenAddInbox={() => setAddInboxOpen(true)}
+      />
+
+      {/* Global Quick Action Modals */}
+      <AddTaskModal
+        open={addTaskOpen}
+        onClose={() => setAddTaskOpen(false)}
+        onSave={() => setAddTaskOpen(false)}
+      />
+      <AddInboxModal
+        open={addInboxOpen}
+        onClose={() => setAddInboxOpen(false)}
+        onSave={() => setAddInboxOpen(false)}
+      />
     </div>
   )
 }

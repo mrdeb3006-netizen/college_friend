@@ -1,18 +1,20 @@
-import React, { useState, useCallback } from 'react'
+import React, { useState } from 'react'
 import { format } from 'date-fns'
 import {
-  Plus, Star, StarOff, Trash2, ExternalLink, Filter,
-  Inbox as InboxIcon, Sparkles, ChevronDown, ChevronUp,
-  Search, MoreHorizontal, CheckCircle
+  Plus, Star, ExternalLink,
+  Inbox as InboxIcon, Sparkles,
+  Search, MoreHorizontal, CheckCircle, CheckSquare, Loader2, Trash2
 } from 'lucide-react'
 import { demoStore } from '../lib/demoStore'
-import { CATEGORIES, CATEGORY_LIST, formatDeadline, formatRelative, truncate } from '../lib/utils'
+import { CATEGORY_LIST, formatRelative } from '../lib/utils'
 import { Button, EmptyState } from '../components/ui'
 import { CategoryBadge, StatusBadge } from '../components/ui/Badge'
 import { Dropdown } from '../components/ui/Overlays'
 import { PageLayout } from '../components/layout/Navigation'
 import AddInboxModal from '../components/inbox/AddInboxModal'
+import AddTaskModal from '../components/tasks/AddTaskModal'
 import InboxItemDetail from '../components/inbox/InboxItemDetail'
+import { extractNotice } from '../services/ai'
 import type { InboxItem, Category, InboxStatus } from '../lib/types'
 import toast from 'react-hot-toast'
 
@@ -32,7 +34,57 @@ export default function InboxPage() {
   const [search, setSearch] = useState('')
   const [onlyImportant, setOnlyImportant] = useState(false)
 
+  // Quick extract state
+  const [quickPaste, setQuickPaste] = useState('')
+  const [extracting, setExtracting] = useState(false)
+
+  // Convert notice to task modal
+  const [taskModalOpen, setTaskModalOpen] = useState(false)
+  const [taskPrefill, setTaskPrefill] = useState<any>(null)
+
   const allItems = demoStore.getInbox()
+
+  const handleQuickExtract = async (e: React.FormEvent) => {
+    e.preventDefault()
+    if (!quickPaste.trim() || extracting) return
+    setExtracting(true)
+    try {
+      const { extraction } = await extractNotice(quickPaste)
+      demoStore.addInboxItem({
+        title: extraction.title || 'Notice',
+        description: quickPaste,
+        source: 'Quick Paste',
+        category: (extraction.category as Category) || 'general',
+        status: 'unread',
+        received_at: new Date().toISOString(),
+        event_date: extraction.event_date || null,
+        registration_deadline: extraction.registration_deadline || null,
+        link: extraction.registration_link || null,
+        attachment_url: null,
+        attachment_name: null,
+        is_important: true,
+        ai_extraction: extraction,
+      })
+      setQuickPaste('')
+      refresh(v => v + 1)
+      toast.success('Notice extracted & saved to Inbox!')
+    } catch {
+      toast.error('Extraction failed. Please try again.')
+    }
+    setExtracting(false)
+  }
+
+  const handleConvertToTask = (item: InboxItem) => {
+    setTaskPrefill({
+      title: `Act on: ${item.title}`,
+      description: item.description,
+      deadline: item.registration_deadline || item.event_date || null,
+      category: item.category,
+      related_notice_id: item.id,
+      related_notice_title: item.title,
+    })
+    setTaskModalOpen(true)
+  }
 
   const filtered = allItems
     .filter(i => statusFilter === 'all' || i.status === statusFilter)
@@ -43,10 +95,10 @@ export default function InboxPage() {
       const q = search.toLowerCase()
       return i.title.toLowerCase().includes(q) || i.description.toLowerCase().includes(q) || i.source.toLowerCase().includes(q)
     })
+    .sort((a, b) => new Date(b.received_at).getTime() - new Date(a.received_at).getTime())
 
   const toggleImportant = (item: InboxItem) => {
     demoStore.updateInboxItem(item.id, { is_important: !item.is_important })
-    toast.success(item.is_important ? 'Removed from Important' : '⭐ Marked as Important')
     refresh(v => v + 1)
   }
 
@@ -67,13 +119,38 @@ export default function InboxPage() {
     <>
       <PageLayout
         title="College Inbox"
-        subtitle={`${allItems.length} items · ${unreadCount} unread`}
+        subtitle={`${allItems.length} notices captured · ${unreadCount} unread`}
         action={
           <Button variant="primary" onClick={() => setShowAdd(true)} id="inbox-add-btn">
-            <Plus className="w-4 h-4" /> Add Item
+            <Plus className="w-4 h-4" /> Add Notice
           </Button>
         }
       >
+        {/* Quick Paste & AI Extract Banner */}
+        <div className="card p-4 mb-5 bg-gradient-to-r from-primary-500/5 via-purple-500/5 to-indigo-500/5 border-primary-200/60 dark:border-primary-800/40">
+          <form onSubmit={handleQuickExtract} className="space-y-2">
+            <div className="flex items-center justify-between">
+              <label className="text-xs font-bold text-slate-800 dark:text-slate-200 flex items-center gap-1.5">
+                <Sparkles className="w-3.5 h-3.5 text-primary-500" />
+                Quick Paste & AI Notice Parser
+              </label>
+              <span className="text-[11px] text-slate-400">Extracts deadlines, fees & tasks automatically</span>
+            </div>
+            <div className="flex gap-2">
+              <input
+                className="input flex-1 h-9 text-xs"
+                placeholder="Paste WhatsApp message, circular text, or email announcement here..."
+                value={quickPaste}
+                onChange={e => setQuickPaste(e.target.value)}
+              />
+              <Button variant="primary" size="sm" type="submit" disabled={!quickPaste.trim() || extracting} className="shrink-0">
+                {extracting ? <Loader2 className="w-3.5 h-3.5 animate-spin" /> : <Sparkles className="w-3.5 h-3.5" />}
+                {extracting ? 'Analyzing...' : 'Parse Notice'}
+              </Button>
+            </div>
+          </form>
+        </div>
+
         {/* Filters */}
         <div className="flex flex-wrap gap-3 mb-5">
           {/* Search */}
@@ -81,7 +158,7 @@ export default function InboxPage() {
             <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
             <input
               className="input pl-9 h-9 text-sm"
-              placeholder="Search inbox..."
+              placeholder="Search by title, keywords or sender..."
               value={search}
               onChange={e => setSearch(e.target.value)}
               id="inbox-search"
@@ -131,11 +208,11 @@ export default function InboxPage() {
         {filtered.length === 0 ? (
           <EmptyState
             icon={<InboxIcon className="w-8 h-8" />}
-            title="Nothing here yet"
-            description="Add college notices, WhatsApp messages, PDFs or links to your inbox."
+            title={search ? 'No notices match your search' : 'No notices in inbox'}
+            description={search ? 'Try clearing your filters.' : 'Capture notices, WhatsApp messages, or announcements here.'}
             action={
               <Button variant="primary" onClick={() => setShowAdd(true)}>
-                <Plus className="w-4 h-4" /> Add to Inbox
+                <Plus className="w-4 h-4" /> Add Notice
               </Button>
             }
           />
@@ -149,6 +226,7 @@ export default function InboxPage() {
                 onToggleImportant={() => toggleImportant(item)}
                 onMarkActed={() => markStatus(item, 'acted')}
                 onDelete={() => deleteItem(item)}
+                onConvertToTask={() => handleConvertToTask(item)}
               />
             ))}
           </div>
@@ -156,6 +234,16 @@ export default function InboxPage() {
       </PageLayout>
 
       <AddInboxModal open={showAdd} onClose={() => setShowAdd(false)} onSave={() => { setShowAdd(false); refresh(v => v + 1) }} />
+      
+      {taskModalOpen && (
+        <AddTaskModal
+          open={taskModalOpen}
+          prefilled={taskPrefill}
+          onClose={() => setTaskModalOpen(false)}
+          onSave={() => { setTaskModalOpen(false); refresh(v => v + 1); toast.success('Task created from notice!') }}
+        />
+      )}
+
       {selectedItem && (
         <InboxItemDetail
           item={selectedItem}
@@ -171,19 +259,20 @@ export default function InboxPage() {
 // Inbox Card
 // ============================================================
 function InboxCard({
-  item, onView, onToggleImportant, onMarkActed, onDelete
+  item, onView, onToggleImportant, onMarkActed, onDelete, onConvertToTask
 }: {
   item: InboxItem
   onView: () => void
   onToggleImportant: () => void
   onMarkActed: () => void
   onDelete: () => void
+  onConvertToTask: () => void
 }) {
   const isUnread = item.status === 'unread'
 
   return (
     <div
-      className={`card-hover p-4 ${isUnread ? 'border-l-4 border-primary-400' : ''}`}
+      className={`card-hover p-4 ${isUnread ? 'border-l-4 border-primary-500' : ''}`}
       onClick={onView}
     >
       <div className="flex items-start gap-3">
@@ -210,6 +299,14 @@ function InboxCard({
             </div>
             {/* Actions */}
             <div className="flex items-center gap-1 shrink-0" onClick={e => e.stopPropagation()}>
+              <button
+                onClick={onConvertToTask}
+                className="hidden sm:inline-flex items-center gap-1 px-2 py-1 rounded text-xs font-medium text-primary-600 dark:text-primary-300 hover:bg-primary-50 dark:hover:bg-primary-950/40 transition-colors"
+                title="Create task linked to this notice"
+              >
+                <CheckSquare className="w-3.5 h-3.5" />
+                <span>Task</span>
+              </button>
               {item.link && (
                 <a href={item.link} target="_blank" rel="noreferrer" className="p-1.5 text-slate-400 hover:text-primary-500 transition-colors">
                   <ExternalLink className="w-3.5 h-3.5" />
@@ -222,9 +319,10 @@ function InboxCard({
                   </button>
                 }
                 items={[
+                  { label: 'Turn into Task', icon: <CheckSquare className="w-3.5 h-3.5" />, onClick: onConvertToTask },
                   { label: item.is_important ? 'Remove star' : 'Mark important', icon: <Star className="w-3.5 h-3.5" />, onClick: onToggleImportant },
                   { label: 'Mark as acted', icon: <CheckCircle className="w-3.5 h-3.5" />, onClick: onMarkActed },
-                  { label: 'Delete', icon: <Trash2 className="w-3.5 h-3.5" />, onClick: onDelete, danger: true },
+                  { label: 'Delete notice', icon: <Trash2 className="w-3.5 h-3.5" />, onClick: onDelete, danger: true },
                 ]}
               />
             </div>

@@ -51,7 +51,7 @@ export default function CommandPalette({
   // Navigation pages
   const navActions: CommandItem[] = [
     { id: 'p-dash', title: 'Go to Dashboard', category: 'Navigation', icon: Search, action: () => navigate('/') },
-    { id: 'p-inbox', title: 'Go to College Inbox', category: 'Navigation', icon: Inbox, action: () => navigate('/inbox') },
+    { id: 'p-inbox', title: 'Go to Smart Inbox', category: 'Navigation', icon: Inbox, action: () => navigate('/inbox') },
     { id: 'p-important', title: 'Go to Important Notices', category: 'Navigation', icon: Star, action: () => navigate('/important') },
     { id: 'p-tasks', title: 'Go to My Tasks', category: 'Navigation', icon: CheckSquare, action: () => navigate('/tasks') },
     { id: 'p-cal', title: 'Go to Calendar', category: 'Navigation', icon: Calendar, action: () => navigate('/calendar') },

@@ -112,12 +112,18 @@ export default function CopilotPage() {
       {/* Header */}
       <div className="flex items-center justify-between px-6 pt-5 pb-3 border-b border-slate-200 dark:border-slate-700 shrink-0">
         <div className="flex items-center gap-3">
-          <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-primary-500 to-purple-600 flex items-center justify-center">
-            <Bot className="w-6 h-6 text-white" />
+          <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-primary-500 to-purple-600 flex items-center justify-center shadow-sm">
+            <Bot className="w-5 h-5 text-white" />
           </div>
           <div>
-            <h1 className="text-lg font-bold text-slate-900 dark:text-slate-100">College Copilot</h1>
-            <p className="text-xs text-slate-500">Your AI academic assistant</p>
+            <div className="flex items-center gap-2">
+              <h1 className="text-base font-bold text-slate-900 dark:text-slate-100">Student AI Copilot</h1>
+              <span className="flex items-center gap-1 text-[11px] px-2 py-0.5 rounded-full bg-emerald-50 dark:bg-emerald-950/40 text-emerald-600 dark:text-emerald-400 font-semibold border border-emerald-200 dark:border-emerald-800">
+                <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
+                Active
+              </span>
+            </div>
+            <p className="text-xs text-slate-500">Autonomous context-aware student assistant</p>
           </div>
         </div>
         {messages.length > 0 && (
@@ -198,13 +204,13 @@ export default function CopilotPage() {
 function WelcomeState({ name }: { name: string }) {
   return (
     <div className="flex flex-col items-center justify-center py-12 text-center gap-4">
-      <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-primary-500 to-purple-600 flex items-center justify-center">
+      <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-primary-500 to-purple-600 flex items-center justify-center shadow-lg shadow-primary-500/20">
         <Bot className="w-8 h-8 text-white" />
       </div>
       <div>
-        <h2 className="text-xl font-bold text-slate-900 dark:text-slate-100">Hi {name.split(' ')[0]}! I'm College Copilot.</h2>
+        <h2 className="text-xl font-bold text-slate-900 dark:text-slate-100">Hi {name.split(' ')[0]}! I'm your AI Copilot.</h2>
         <p className="text-slate-500 mt-1 max-w-md text-sm">
-          I know your tasks, deadlines, and important notices. Ask me anything — from planning your day to navigating a complex decision.
+          I'm connected to your real tasks, deadlines, and captured notices. Ask me anything — from planning your hours to analyzing tough academic choices.
         </p>
       </div>
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mt-2 w-full max-w-sm">
@@ -228,6 +234,7 @@ function WelcomeState({ name }: { name: string }) {
 // ============================================================
 function MessageBubble({ message }: { message: CopilotMessage }) {
   const isUser = message.role === 'user'
+  const userAvatar = demoStore.getProfile().avatar_url
 
   const modeLabel: Record<string, string> = {
     decision: '🧭 Decision Analysis',
@@ -240,11 +247,19 @@ function MessageBubble({ message }: { message: CopilotMessage }) {
   return (
     <div className={`flex gap-3 ${isUser ? 'flex-row-reverse' : 'flex-row'}`}>
       {/* Avatar */}
-      <div className={`w-7 h-7 rounded-full flex items-center justify-center text-white shrink-0 mt-0.5 ${
-        isUser ? 'bg-primary-500' : 'bg-gradient-to-br from-primary-500 to-purple-600'
-      }`}>
-        {isUser ? <User className="w-4 h-4" /> : <Bot className="w-4 h-4" />}
-      </div>
+      {isUser && userAvatar ? (
+        <img
+          src={userAvatar}
+          alt="Avatar"
+          className="w-7 h-7 rounded-full object-cover border border-primary-200 dark:border-primary-800 shrink-0 mt-0.5"
+        />
+      ) : (
+        <div className={`w-7 h-7 rounded-full flex items-center justify-center text-white shrink-0 mt-0.5 ${
+          isUser ? 'bg-primary-500' : 'bg-gradient-to-br from-primary-500 to-purple-600'
+        }`}>
+          {isUser ? <User className="w-4 h-4" /> : <Bot className="w-4 h-4" />}
+        </div>
+      )}
 
       <div className={`flex flex-col gap-1 ${isUser ? 'items-end' : 'items-start'} max-w-[85%]`}>
         {/* Mode label */}

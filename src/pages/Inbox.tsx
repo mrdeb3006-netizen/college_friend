@@ -118,7 +118,7 @@ export default function InboxPage() {
   return (
     <>
       <PageLayout
-        title="College Inbox"
+        title="Smart Inbox"
         subtitle={`${allItems.length} notices captured · ${unreadCount} unread`}
         action={
           <Button variant="primary" onClick={() => setShowAdd(true)} id="inbox-add-btn">

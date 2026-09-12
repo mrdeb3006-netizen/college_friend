@@ -24,7 +24,7 @@ import { demoStore } from '../../lib/demoStore'
 
 const NAV_ITEMS = [
   { to: '/',            icon: LayoutDashboard, label: 'Dashboard',     id: 'nav-dashboard' },
-  { to: '/inbox',       icon: Inbox,           label: 'College Inbox', id: 'nav-inbox' },
+  { to: '/inbox',       icon: Inbox,           label: 'Smart Inbox',   id: 'nav-inbox' },
   { to: '/important',   icon: Star,            label: 'Important',     id: 'nav-important' },
   { to: '/tasks',       icon: CheckSquare,     label: 'My Tasks',      id: 'nav-tasks' },
   { to: '/calendar',    icon: Calendar,        label: 'Calendar',      id: 'nav-calendar' },

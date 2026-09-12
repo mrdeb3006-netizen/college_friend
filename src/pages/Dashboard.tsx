@@ -116,7 +116,7 @@ export default function Dashboard() {
           </div>
           <div className="card p-3.5 flex items-center justify-between border-l-4 border-l-teal-500">
             <div>
-              <p className="text-xs font-medium text-slate-500 dark:text-slate-400">College Notices</p>
+              <p className="text-xs font-medium text-slate-500 dark:text-slate-400">Captured Notices</p>
               <p className="text-xl font-bold text-slate-900 dark:text-slate-100 mt-0.5">{totalInbox}</p>
             </div>
             <div className="w-9 h-9 rounded-xl bg-teal-50 dark:bg-teal-950/40 flex items-center justify-center text-teal-600 dark:text-teal-400">
@@ -163,7 +163,7 @@ export default function Dashboard() {
           {[
             { label: 'Add Task', icon: '✅', color: 'bg-primary-500', onClick: () => setShowAddTask(true) },
             { label: 'Add Notice', icon: '📌', color: 'bg-orange-500', onClick: () => setShowAddInbox(true) },
-            { label: 'College Inbox', icon: '📥', color: 'bg-teal-500', onClick: () => navigate('/inbox') },
+            { label: 'Smart Inbox', icon: '📥', color: 'bg-teal-500', onClick: () => navigate('/inbox') },
             { label: 'AI Copilot', icon: '🤖', color: 'bg-purple-500', onClick: () => navigate('/copilot') },
           ].map(item => (
             <button
@@ -221,7 +221,7 @@ export default function Dashboard() {
                   <Sparkles className="w-5 h-5 text-white" />
                 </div>
                 <div className="flex-1 min-w-0">
-                  <p className="text-sm font-semibold text-slate-900 dark:text-slate-100">College Copilot</p>
+                  <p className="text-sm font-semibold text-slate-900 dark:text-slate-100">AI Copilot</p>
                   <p className="text-xs text-slate-500 truncate">Ask me to plan your day, analyze a notice, or help you decide</p>
                 </div>
                 <button

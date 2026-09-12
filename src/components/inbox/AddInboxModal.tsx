@@ -95,8 +95,8 @@ export default function AddInboxModal({ open, onClose, onSave }: AddInboxModalPr
     <Modal
       open={open}
       onClose={onClose}
-      title="Add to College Inbox"
-      description="Capture any college-related information here."
+      title="Capture Notice or Announcement"
+      description="Paste any WhatsApp announcement, circular text, or message to organize it."
       size="lg"
       footer={
         <>

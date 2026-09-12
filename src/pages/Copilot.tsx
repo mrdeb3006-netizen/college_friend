@@ -163,26 +163,26 @@ export default function CopilotPage() {
       )}
 
       {/* Input */}
-      <div className="px-4 md:px-6 pb-4 md:pb-6 pt-2 border-t border-slate-200 dark:border-slate-700 shrink-0">
-        <div className="flex gap-3 items-end bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-2xl p-3 shadow-card">
+      <div className="px-4 md:px-6 pb-4 md:pb-6 pt-2 border-t border-slate-200/80 dark:border-slate-800 shrink-0">
+        <div className="flex gap-3 items-end bg-white/90 dark:bg-slate-900/90 backdrop-blur-md border border-slate-200/90 dark:border-slate-800 rounded-2xl p-3 shadow-card focus-within:ring-2 focus-within:ring-primary-500/30 focus-within:border-primary-500 transition-all">
           <textarea
             ref={inputRef}
             value={input}
             onChange={e => setInput(e.target.value)}
             onKeyDown={handleKeyDown}
-            placeholder="Ask about your tasks, decisions, notices, or get a plan for today…"
+            placeholder="Ask about prioritizing your week, deciding on opportunities, or structuring a notice…"
             rows={1}
             className="flex-1 bg-transparent text-sm text-slate-900 dark:text-slate-100 placeholder-slate-400 dark:placeholder-slate-500 resize-none focus:outline-none max-h-32 overflow-y-auto"
-            style={{ minHeight: '20px' }}
+            style={{ minHeight: '24px' }}
             id="copilot-input"
           />
           <button
             onClick={() => sendMessage()}
             disabled={!input.trim() || loading}
-            className={`w-8 h-8 rounded-xl flex items-center justify-center transition-all shrink-0 ${
+            className={`w-9 h-9 rounded-xl flex items-center justify-center transition-all shrink-0 cursor-pointer ${
               input.trim() && !loading
-                ? 'bg-primary-500 text-white hover:bg-primary-600'
-                : 'bg-slate-200 dark:bg-slate-700 text-slate-400 cursor-not-allowed'
+                ? 'bg-gradient-to-r from-primary-600 to-indigo-600 text-white shadow-sm hover:shadow-glow-primary hover:from-primary-500 hover:to-indigo-500 active:scale-95'
+                : 'bg-slate-100 dark:bg-slate-800 text-slate-400 cursor-not-allowed'
             }`}
             aria-label="Send message"
             id="copilot-send"
@@ -190,8 +190,8 @@ export default function CopilotPage() {
             <Send className="w-4 h-4" />
           </button>
         </div>
-        <p className="text-center text-xs text-slate-400 mt-2">
-          College Copilot uses your actual tasks and deadlines to give personalized advice.
+        <p className="text-center text-[11px] text-slate-400 mt-2 font-medium">
+          Student AI Copilot operates with full live awareness of your active tasks, deadlines, and captured notices.
         </p>
       </div>
     </div>

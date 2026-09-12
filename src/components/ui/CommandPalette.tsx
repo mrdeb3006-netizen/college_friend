@@ -146,31 +146,31 @@ export default function CommandPalette({
   if (!open) return null
 
   return (
-    <div className="fixed inset-0 z-50 flex items-start justify-center pt-20 px-4 bg-slate-950/60 backdrop-blur-sm animate-fade-in">
+    <div className="fixed inset-0 z-50 flex items-start justify-center pt-24 px-4 bg-slate-950/70 backdrop-blur-md animate-fade-in" onClick={onClose}>
       <div
-        className="w-full max-w-xl bg-white dark:bg-slate-900 rounded-2xl shadow-2xl border border-slate-200 dark:border-slate-700 overflow-hidden"
+        className="w-full max-w-xl bg-white/95 dark:bg-slate-900/95 backdrop-blur-2xl rounded-3xl shadow-2xl border border-slate-200/90 dark:border-slate-800 overflow-hidden"
         onClick={e => e.stopPropagation()}
       >
         {/* Search Input Bar */}
-        <div className="relative flex items-center px-4 py-3.5 border-b border-slate-200 dark:border-slate-800">
-          <Search className="w-5 h-5 text-slate-400 shrink-0" />
+        <div className="relative flex items-center px-4.5 py-4 border-b border-slate-200/80 dark:border-slate-800">
+          <Search className="w-5 h-5 text-primary-500 shrink-0" />
           <input
             ref={inputRef}
-            className="w-full bg-transparent border-0 px-3 text-sm text-slate-900 dark:text-slate-100 placeholder-slate-400 focus:outline-none focus:ring-0"
-            placeholder="Type a command, task title, or notice keyword..."
+            className="w-full bg-transparent border-0 px-3 text-sm text-slate-900 dark:text-slate-100 placeholder-slate-400 dark:placeholder-slate-500 focus:outline-none focus:ring-0 font-medium"
+            placeholder="Search commands, tasks, notices, or switch views..."
             value={query}
             onChange={e => { setQuery(e.target.value); setSelectedIndex(0) }}
           />
-          <kbd className="hidden sm:inline-flex items-center gap-0.5 px-2 py-0.5 text-[11px] font-medium text-slate-400 bg-slate-100 dark:bg-slate-800 rounded border border-slate-200 dark:border-slate-700">
+          <kbd className="hidden sm:inline-flex items-center gap-0.5 px-2 py-0.5 text-[10px] font-mono font-semibold text-slate-400 bg-slate-100 dark:bg-slate-800 rounded-md border border-slate-200 dark:border-slate-700">
             ESC
           </kbd>
         </div>
 
         {/* Results List */}
-        <div className="max-h-80 overflow-y-auto p-2 space-y-1">
+        <div className="max-h-84 overflow-y-auto p-2.5 space-y-1">
           {allItems.length === 0 ? (
-            <div className="py-8 text-center text-sm text-slate-400">
-              No results found for "{query}".
+            <div className="py-10 text-center text-xs font-medium text-slate-400">
+              No matching commands or items for "{query}".
             </div>
           ) : (
             allItems.map((item, idx) => {
@@ -181,30 +181,30 @@ export default function CommandPalette({
                   key={item.id}
                   onClick={() => { item.action(); onClose() }}
                   onMouseEnter={() => setSelectedIndex(idx)}
-                  className={`w-full flex items-center justify-between px-3 py-2.5 rounded-xl text-left transition-all ${
+                  className={`w-full flex items-center justify-between px-3.5 py-2.5 rounded-2xl text-left transition-all cursor-pointer ${
                     isSelected
-                      ? 'bg-primary-50 dark:bg-primary-900/30 text-primary-700 dark:text-primary-300'
+                      ? 'bg-primary-50 dark:bg-primary-950/60 text-primary-700 dark:text-primary-300 shadow-2xs'
                       : 'text-slate-700 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-800/60'
                   }`}
                 >
                   <div className="flex items-center gap-3 min-w-0">
-                    <div className={`w-7 h-7 rounded-lg flex items-center justify-center shrink-0 ${
+                    <div className={`w-8 h-8 rounded-xl flex items-center justify-center shrink-0 transition-transform ${
                       isSelected
-                        ? 'bg-primary-500 text-white shadow-sm'
+                        ? 'bg-gradient-to-tr from-primary-600 to-indigo-600 text-white shadow-glow-primary scale-105'
                         : 'bg-slate-100 dark:bg-slate-800 text-slate-500 dark:text-slate-400'
                     }`}>
                       <Icon className="w-4 h-4" />
                     </div>
-                    <span className="text-sm font-medium truncate">{item.title}</span>
+                    <span className="text-xs font-bold truncate">{item.title}</span>
                   </div>
 
                   <div className="flex items-center gap-2 shrink-0 ml-3">
                     {item.badge && (
-                      <span className="text-[11px] px-2 py-0.5 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-500 font-medium">
+                      <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-500 border border-slate-200/60 dark:border-slate-700/60">
                         {item.badge}
                       </span>
                     )}
-                    <span className="text-[11px] text-slate-400">
+                    <span className="text-[10px] font-semibold text-slate-400 uppercase tracking-wider">
                       {item.category}
                     </span>
                     {isSelected && (
@@ -218,13 +218,17 @@ export default function CommandPalette({
         </div>
 
         {/* Footer shortcuts info */}
-        <div className="px-4 py-2 bg-slate-50 dark:bg-slate-800/50 border-t border-slate-200 dark:border-slate-800 flex items-center justify-between text-[11px] text-slate-400">
+        <div className="px-4 py-2.5 bg-slate-50/70 dark:bg-slate-950/60 border-t border-slate-200/80 dark:border-slate-800 flex items-center justify-between text-[11px] text-slate-400 font-medium">
           <div className="flex items-center gap-3">
-            <span>Use <kbd className="px-1 py-0.5 rounded bg-slate-200 dark:bg-slate-700 font-mono">↑</kbd> <kbd className="px-1 py-0.5 rounded bg-slate-200 dark:bg-slate-700 font-mono">↓</kbd> to navigate</span>
-            <span><kbd className="px-1 py-0.5 rounded bg-slate-200 dark:bg-slate-700 font-mono">↵</kbd> to select</span>
+            <span className="flex items-center gap-1">
+              <kbd className="px-1 py-0.5 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded text-[9px] font-mono">↑↓</kbd> Navigate
+            </span>
+            <span className="flex items-center gap-1">
+              <kbd className="px-1 py-0.5 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded text-[9px] font-mono">↵</kbd> Select
+            </span>
           </div>
-          <span className="flex items-center gap-1 text-primary-600 dark:text-primary-400 font-medium">
-            <Sparkles className="w-3 h-3" /> Command Palette
+          <span className="text-[10px] text-primary-600 dark:text-primary-400 font-semibold">
+            College Command Center
           </span>
         </div>
       </div>

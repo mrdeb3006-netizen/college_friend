@@ -163,41 +163,47 @@ export default function TasksPage() {
       >
         {/* Completion Progress Bar */}
         {totalCount > 0 && (
-          <div className="mb-4 bg-white dark:bg-slate-800/80 p-3 rounded-xl border border-slate-200 dark:border-slate-700 shadow-2xs">
-            <div className="flex items-center justify-between text-xs font-medium mb-1.5">
-              <span className="text-slate-600 dark:text-slate-300">Overall Progress</span>
-              <span className="text-primary-600 dark:text-primary-400 font-bold">{progressPercent}%</span>
+          <div className="mb-4 card p-3.5 shadow-2xs">
+            <div className="flex items-center justify-between text-xs font-semibold mb-2">
+              <span className="text-slate-700 dark:text-slate-300">Task Completion Velocity</span>
+              <span className="text-primary-600 dark:text-primary-400 font-extrabold">{progressPercent}%</span>
             </div>
-            <div className="w-full h-2 bg-slate-100 dark:bg-slate-700 rounded-full overflow-hidden">
+            <div className="w-full h-2 bg-slate-100 dark:bg-slate-800 rounded-full overflow-hidden">
               <div
-                className="h-full bg-gradient-to-r from-primary-500 to-emerald-500 rounded-full transition-all duration-500"
+                className="h-full bg-gradient-to-r from-primary-600 via-indigo-500 to-emerald-500 rounded-full transition-all duration-500"
                 style={{ width: `${progressPercent}%` }}
               />
             </div>
           </div>
         )}
 
-        {/* Quick Add Bar */}
-        <form onSubmit={handleQuickAdd} className="mb-5 flex flex-col sm:flex-row gap-2">
-          <input
-            className="input flex-1 h-10 text-sm"
-            placeholder="✍️ Quickly add a task (e.g. Study Graph Algorithms, Submit Physics assignment)..."
-            value={quickTitle}
-            onChange={e => setQuickTitle(e.target.value)}
-          />
-          <select
-            value={quickPriority}
-            onChange={e => setQuickPriority(e.target.value as Priority)}
-            className="select h-10 text-xs sm:w-48"
-          >
-            <option value="urgent_important">🔥 Urgent & Important</option>
-            <option value="important_not_urgent">🎯 Important (Schedule)</option>
-            <option value="urgent_not_important">⚡ Urgent (Quick)</option>
-            <option value="low">📦 Low Priority</option>
-          </select>
-          <Button variant="secondary" type="submit" className="h-10 shrink-0">
-            <Plus className="w-4 h-4" /> Add
-          </Button>
+        {/* Quick Add Bar (Linear Style) */}
+        <form onSubmit={handleQuickAdd} className="mb-5 card p-2 flex flex-col sm:flex-row items-center gap-2 shadow-2xs">
+          <div className="flex-1 flex items-center gap-2 px-2 w-full">
+            <Plus className="w-4 h-4 text-primary-500 shrink-0" />
+            <input
+              className="w-full bg-transparent border-none text-sm text-slate-900 dark:text-slate-100 placeholder-slate-400 dark:placeholder-slate-500 focus:outline-none"
+              placeholder="Quickly capture a task (e.g. Study Operating Systems, Submit Lab Report)..."
+              value={quickTitle}
+              onChange={e => setQuickTitle(e.target.value)}
+            />
+          </div>
+          <div className="flex items-center gap-2 w-full sm:w-auto shrink-0 justify-end">
+            <select
+              value={quickPriority}
+              onChange={e => setQuickPriority(e.target.value as Priority)}
+              className="select h-9 text-xs sm:w-44 bg-slate-50 dark:bg-slate-800"
+            >
+              <option value="urgent_important">🔥 Urgent & Important</option>
+              <option value="important_not_urgent">🎯 Important (Schedule)</option>
+              <option value="urgent_not_important">⚡ Notable (Quick)</option>
+              <option value="low">📦 Low Priority</option>
+            </select>
+            <Button variant="primary" type="submit" size="sm" className="h-9 shrink-0">
+              <span>Add</span>
+              <kbd className="hidden sm:inline-block text-[10px] text-white/80 font-mono">↵</kbd>
+            </Button>
+          </div>
         </form>
 
         {/* Search & Filters */}

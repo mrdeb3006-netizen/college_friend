@@ -127,25 +127,27 @@ export default function InboxPage() {
         }
       >
         {/* Quick Paste & AI Extract Banner */}
-        <div className="card p-4 mb-5 bg-gradient-to-r from-primary-500/5 via-purple-500/5 to-indigo-500/5 border-primary-200/60 dark:border-primary-800/40">
-          <form onSubmit={handleQuickExtract} className="space-y-2">
+        <div className="card p-4 mb-5 bg-gradient-to-r from-primary-500/10 via-purple-500/5 to-indigo-500/10 border border-primary-300/60 dark:border-primary-800/60 shadow-xs">
+          <form onSubmit={handleQuickExtract} className="space-y-2.5">
             <div className="flex items-center justify-between">
-              <label className="text-xs font-bold text-slate-800 dark:text-slate-200 flex items-center gap-1.5">
-                <Sparkles className="w-3.5 h-3.5 text-primary-500" />
-                Quick Paste & AI Notice Parser
+              <label className="text-xs font-bold text-slate-900 dark:text-slate-100 flex items-center gap-1.5">
+                <span className="w-5 h-5 rounded-lg bg-primary-500 text-white flex items-center justify-center shrink-0 shadow-2xs">
+                  <Sparkles className="w-3 h-3" />
+                </span>
+                Instant AI Notice Parser & Extraction
               </label>
-              <span className="text-[11px] text-slate-400">Extracts deadlines, fees & tasks automatically</span>
+              <span className="text-[11px] text-slate-500 dark:text-slate-400 hidden sm:inline font-medium">Auto-detects deadlines, requirements & action items</span>
             </div>
-            <div className="flex gap-2">
+            <div className="flex flex-col sm:flex-row gap-2">
               <input
-                className="input flex-1 h-9 text-xs"
-                placeholder="Paste WhatsApp message, circular text, or email announcement here..."
+                className="input flex-1 h-10 text-xs shadow-2xs"
+                placeholder="Paste raw WhatsApp circular, exam notice, hackathon announcement, or club email..."
                 value={quickPaste}
                 onChange={e => setQuickPaste(e.target.value)}
               />
-              <Button variant="primary" size="sm" type="submit" disabled={!quickPaste.trim() || extracting} className="shrink-0">
-                {extracting ? <Loader2 className="w-3.5 h-3.5 animate-spin" /> : <Sparkles className="w-3.5 h-3.5" />}
-                {extracting ? 'Analyzing...' : 'Parse Notice'}
+              <Button variant="primary" size="sm" type="submit" disabled={!quickPaste.trim() || extracting} className="h-10 shrink-0">
+                {extracting ? <Loader2 className="w-4 h-4 animate-spin" /> : <Sparkles className="w-4 h-4" />}
+                {extracting ? 'Analyzing...' : 'Parse & Extract'}
               </Button>
             </div>
           </form>

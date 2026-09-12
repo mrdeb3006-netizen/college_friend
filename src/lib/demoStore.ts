@@ -22,11 +22,8 @@ const DEFAULT_PROFILE: UserProfile = {
   name: 'Debendranath Bera',
   email: 'mrdeb3006@gmail.com',
   avatar_url: 'https://avatars.githubusercontent.com/u/279176333?v=4',
-  college: 'College of Engineering',
-  year: '3rd Year',
-  branch: 'Computer Science & Engineering',
   interests: ['Full-Stack Development', 'AI & Machine Learning', 'Competitive Programming', 'Open Source'],
-  goals: 'Excel in academics, master modern engineering, and build impactful software applications.',
+  goals: 'Master modern engineering, stay ahead of deadlines, and build impactful software applications.',
   theme: 'system',
   onboarding_complete: true,
   ai_preferences: {
@@ -44,7 +41,7 @@ const INITIAL_TASKS: Task[] = []
 
 // Migration & cleanup key to clear any legacy demo material from browser storage
 const STORE_VERSION_KEY = 'ccc_clean_version'
-const CURRENT_VERSION = 'v2_clean_debendranath_bera'
+const CURRENT_VERSION = 'v3_clean_debendranath_no_college_branch'
 
 if (typeof window !== 'undefined' && window.localStorage) {
   try {
@@ -57,15 +54,16 @@ if (typeof window !== 'undefined' && window.localStorage) {
         localStorage.setItem('ccc_tasks', JSON.stringify(INITIAL_TASKS))
         localStorage.setItem('ccc_messages', JSON.stringify([]))
       } else {
-        // Upgrade existing profile with real name and avatar
+        // Upgrade existing profile with real name and remove college/branch
         try {
           const parsed = JSON.parse(storedProfile)
-          if (parsed.name === 'Arjun Sharma' || !parsed.avatar_url) {
-            parsed.name = 'Debendranath Bera'
-            parsed.email = 'mrdeb3006@gmail.com'
-            parsed.avatar_url = 'https://avatars.githubusercontent.com/u/279176333?v=4'
-            localStorage.setItem('ccc_profile', JSON.stringify(parsed))
-          }
+          parsed.name = 'Debendranath Bera'
+          parsed.email = 'mrdeb3006@gmail.com'
+          parsed.avatar_url = 'https://avatars.githubusercontent.com/u/279176333?v=4'
+          delete parsed.college
+          delete parsed.year
+          delete parsed.branch
+          localStorage.setItem('ccc_profile', JSON.stringify(parsed))
         } catch {
           // ignore
         }

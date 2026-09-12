@@ -138,7 +138,7 @@ export function Sidebar() {
                 {profile.name}
               </p>
               <p className="text-slate-400 text-xs truncate">
-                {profile.year} · {profile.branch}
+                {profile.email || 'Personal Command Center'}
               </p>
             </div>
           )}

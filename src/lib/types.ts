@@ -23,9 +23,9 @@ export interface UserProfile {
   name: string
   email?: string
   avatar_url?: string
-  college: string
-  year: string
-  branch: string
+  college?: string
+  year?: string
+  branch?: string
   interests: string[]
   goals: string
   theme: 'light' | 'dark' | 'system'

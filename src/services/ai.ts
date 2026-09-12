@@ -87,9 +87,8 @@ function buildUserContext(): object {
   return {
     profile: {
       name: profile.name,
-      year: profile.year,
-      branch: profile.branch,
       interests: profile.interests,
+      goals: profile.goals,
     },
     activeTasks: activeTasks.map(t => ({
       id: t.id,

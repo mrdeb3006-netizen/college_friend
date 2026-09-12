@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import {
-  User, School, Bell, Bot, Palette, Shield,
+  User, Bell, Bot, Palette, Shield,
   Save, Moon, Sun, Monitor, Trash2, Download
 } from 'lucide-react'
 import { demoStore } from '../lib/demoStore'
@@ -17,15 +17,7 @@ const INTEREST_OPTIONS = [
   'Robotics / IoT', 'Finance / Fintech', 'Healthcare Tech', 'EdTech',
 ]
 
-const YEAR_OPTIONS = [
-  { value: '1st Year', label: '1st Year' },
-  { value: '2nd Year', label: '2nd Year' },
-  { value: '3rd Year', label: '3rd Year' },
-  { value: '4th Year', label: '4th Year (Final)' },
-  { value: 'Postgraduate', label: 'Postgraduate' },
-]
-
-type SettingsTab = 'profile' | 'college' | 'ai' | 'theme' | 'data'
+type SettingsTab = 'profile' | 'ai' | 'theme' | 'data'
 
 export default function SettingsPage() {
   const [activeTab, setActiveTab] = useState<SettingsTab>('profile')
@@ -84,8 +76,7 @@ export default function SettingsPage() {
 
   const tabs = [
     { id: 'profile', label: 'Profile',  icon: User },
-    { id: 'college', label: 'College',  icon: School },
-    { id: 'ai',      label: 'AI',       icon: Bot },
+    { id: 'ai',      label: 'AI Copilot', icon: Bot },
     { id: 'theme',   label: 'Theme',    icon: Palette },
     { id: 'data',    label: 'Data',     icon: Shield },
   ] as const
@@ -133,7 +124,6 @@ export default function SettingsPage() {
                 <div className="overflow-hidden min-w-0">
                   <p className="font-bold text-slate-900 dark:text-slate-100 text-base truncate">{profile.name}</p>
                   <p className="text-sm text-slate-500 truncate">{profile.email || 'mrdeb3006@gmail.com'}</p>
-                  <p className="text-xs text-primary-600 dark:text-primary-400 font-medium truncate mt-0.5">{profile.year} · {profile.branch}</p>
                 </div>
               </div>
               <Input label="Full Name" value={profile.name} onChange={e => update('name', e.target.value)} id="settings-name" />
@@ -158,15 +148,6 @@ export default function SettingsPage() {
                   ))}
                 </div>
               </div>
-            </div>
-          )}
-
-          {activeTab === 'college' && (
-            <div className="card p-6 space-y-4">
-              <h2 className="section-title">College Information</h2>
-              <Input label="College / University" value={profile.college} onChange={e => update('college', e.target.value)} id="settings-college" />
-              <Select label="Year of Study" options={YEAR_OPTIONS} value={profile.year} onChange={e => update('year', e.target.value)} id="settings-year" />
-              <Input label="Branch / Department" value={profile.branch} onChange={e => update('branch', e.target.value)} id="settings-branch" />
             </div>
           )}
 

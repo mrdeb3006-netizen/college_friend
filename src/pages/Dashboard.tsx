@@ -74,7 +74,7 @@ export default function Dashboard() {
               {greeting}, {profile.name.split(' ')[0]} 👋
             </h1>
             <p className="text-xs text-primary-600 dark:text-primary-400 font-medium mt-0.5">
-              {profile.college} · {profile.branch} ({profile.year})
+              Personal Academic & Task Command Center
             </p>
           </div>
 

@@ -1,16 +1,13 @@
 import React, { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { GraduationCap, ArrowRight, Sparkles } from 'lucide-react'
-import { Button, Input, Textarea, Select } from '../components/ui'
+import { Button, Input, Textarea } from '../components/ui'
 import { demoStore } from '../lib/demoStore'
-import type { UserProfile } from '../lib/types'
 
 const STEPS = [
-  { id: 'name',     title: 'Welcome! What\'s your name?',              subtitle: 'Let\'s personalize your experience.' },
-  { id: 'college',  title: 'Which college do you attend?',             subtitle: 'This helps us tailor the app for your institution.' },
-  { id: 'details',  title: 'Tell us about your studies.',              subtitle: 'We\'ll use this to prioritize what matters to you.' },
-  { id: 'interests',title: 'What are you passionate about?',           subtitle: 'Select your interests — helps the AI Copilot give better advice.' },
-  { id: 'workflow', title: 'Your personal operating system is ready.', subtitle: 'Here\'s how it works.' },
+  { id: 'name',      title: "Welcome! What's your name?",         subtitle: "Let's personalize your command center." },
+  { id: 'interests', title: 'What are you passionate about?',      subtitle: 'Select your focus areas — helps the AI Copilot give tailored advice.' },
+  { id: 'workflow',  title: 'Your Command Center is ready.',       subtitle: "Here's how your personal operating system works." },
 ]
 
 const INTEREST_OPTIONS = [
@@ -20,23 +17,12 @@ const INTEREST_OPTIONS = [
   'Robotics / IoT', 'Finance / Fintech', 'Healthcare Tech', 'EdTech',
 ]
 
-const YEAR_OPTIONS = [
-  { value: '1st Year', label: '1st Year' },
-  { value: '2nd Year', label: '2nd Year' },
-  { value: '3rd Year', label: '3rd Year' },
-  { value: '4th Year', label: '4th Year (Final)' },
-  { value: 'Postgraduate', label: 'Postgraduate' },
-]
-
 export default function Onboarding() {
   const navigate = useNavigate()
   const [step, setStep] = useState(0)
   const [data, setData] = useState({
-    name: '',
-    college: '',
-    year: '2nd Year',
-    branch: '',
-    interests: [] as string[],
+    name: 'Debendranath Bera',
+    interests: ['Full-Stack Development', 'AI & Machine Learning', 'Competitive Programming', 'Open Source'] as string[],
     goals: '',
   })
 
@@ -57,8 +43,6 @@ export default function Onboarding() {
 
   const canProceed = () => {
     if (step === 0) return data.name.trim().length >= 2
-    if (step === 1) return data.college.trim().length >= 2
-    if (step === 2) return data.branch.trim().length >= 2
     return true
   }
 
@@ -66,10 +50,7 @@ export default function Onboarding() {
     if (isLast) {
       demoStore.completeOnboarding({
         ...demoStore.getProfile(),
-        name: data.name || 'Student',
-        college: data.college,
-        year: data.year,
-        branch: data.branch,
+        name: data.name || 'Debendranath Bera',
         interests: data.interests,
         goals: data.goals,
       })
@@ -84,7 +65,7 @@ export default function Onboarding() {
       <div className="w-full max-w-md">
         {/* Logo */}
         <div className="flex items-center gap-3 mb-8 justify-center">
-          <div className="w-10 h-10 rounded-xl bg-primary-500 flex items-center justify-center">
+          <div className="w-10 h-10 rounded-xl bg-primary-500 flex items-center justify-center shadow-lg shadow-primary-500/20">
             <GraduationCap className="w-6 h-6 text-white" />
           </div>
           <div>
@@ -116,29 +97,16 @@ export default function Onboarding() {
           {step === 0 && (
             <div className="space-y-4">
               <Input
-                label="Your Name"
+                label="Your Full Name"
                 placeholder="e.g. Debendranath Bera"
                 value={data.name}
                 onChange={e => update('name', e.target.value)}
                 autoFocus
                 id="onboarding-name"
               />
-            </div>
-          )}
-
-          {step === 1 && (
-            <div className="space-y-4">
-              <Input
-                label="College / University Name"
-                placeholder="e.g. BITS Pilani, IIT Bombay, VIT..."
-                value={data.college}
-                onChange={e => update('college', e.target.value)}
-                autoFocus
-                id="onboarding-college"
-              />
               <Textarea
-                label="Goals (optional)"
-                placeholder="e.g. Get a software engineering internship, build meaningful projects..."
+                label="Main Focus / Goals (optional)"
+                placeholder="e.g. Master software engineering, prepare for placements, balance coursework..."
                 value={data.goals}
                 onChange={e => update('goals', e.target.value)}
                 rows={3}
@@ -147,26 +115,7 @@ export default function Onboarding() {
             </div>
           )}
 
-          {step === 2 && (
-            <div className="space-y-4">
-              <Select
-                label="Year of Study"
-                options={YEAR_OPTIONS}
-                value={data.year}
-                onChange={e => update('year', e.target.value)}
-                id="onboarding-year"
-              />
-              <Input
-                label="Branch / Department"
-                placeholder="e.g. Computer Science, Mechanical, Electronics..."
-                value={data.branch}
-                onChange={e => update('branch', e.target.value)}
-                id="onboarding-branch"
-              />
-            </div>
-          )}
-
-          {step === 3 && (
+          {step === 1 && (
             <div>
               <div className="flex flex-wrap gap-2">
                 {INTEREST_OPTIONS.map(interest => (
@@ -175,7 +124,7 @@ export default function Onboarding() {
                     onClick={() => toggleInterest(interest)}
                     className={`px-3 py-1.5 rounded-full text-xs font-medium border transition-all ${
                       data.interests.includes(interest)
-                        ? 'bg-primary-500 border-primary-500 text-white'
+                        ? 'bg-primary-500 border-primary-500 text-white shadow-sm'
                         : 'border-slate-200 dark:border-slate-600 text-slate-600 dark:text-slate-400 hover:border-primary-300'
                     }`}
                   >
@@ -187,28 +136,28 @@ export default function Onboarding() {
             </div>
           )}
 
-          {step === 4 && (
+          {step === 2 && (
             <div className="space-y-4">
               {[
                 {
                   step: '1. Capture',
                   icon: '📥',
-                  desc: 'Add college notices, PDFs, WhatsApp messages, links to the College Inbox.',
+                  desc: 'Add notices, PDFs, WhatsApp messages, or web links to your Inbox.',
                 },
                 {
                   step: '2. Understand',
                   icon: '🤖',
-                  desc: 'AI extracts key info: deadlines, eligibility, required actions from complex notices.',
+                  desc: 'AI automatically extracts deadlines, eligibility, and required actions.',
                 },
                 {
                   step: '3. Prioritize',
                   icon: '⚡',
-                  desc: 'The Eisenhower matrix and AI help you focus on what actually matters.',
+                  desc: 'Eisenhower priority matrix helps you focus on what actually moves the needle.',
                 },
                 {
-                  step: '4. Act',
+                  step: '4. Act & Track',
                   icon: '✅',
-                  desc: 'Tasks linked to notices. Calendar shows everything. College Copilot guides decisions.',
+                  desc: 'Turn notices into actionable tasks. AI Copilot guides your daily decisions.',
                 },
               ].map(item => (
                 <div key={item.step} className="flex gap-3">
@@ -223,7 +172,7 @@ export default function Onboarding() {
               <div className="bg-primary-50 dark:bg-primary-900/20 rounded-xl p-4 flex items-start gap-3 mt-2">
                 <Sparkles className="w-5 h-5 text-primary-500 shrink-0 mt-0.5" />
                 <p className="text-sm text-primary-700 dark:text-primary-300">
-                  Everything is saved locally for now. When you add your Supabase credentials, your data syncs across devices.
+                  Everything is kept fast and private on your device. You are ready to take control of your schedule!
                 </p>
               </div>
             </div>
@@ -255,7 +204,7 @@ export default function Onboarding() {
         {!isLast && (
           <button
             onClick={() => {
-              demoStore.completeOnboarding({ ...demoStore.getProfile(), name: data.name || 'Student' })
+              demoStore.completeOnboarding({ ...demoStore.getProfile(), name: data.name || 'Debendranath Bera' })
               navigate('/')
             }}
             className="w-full text-center text-xs text-white/40 hover:text-white/60 mt-4 transition-colors"

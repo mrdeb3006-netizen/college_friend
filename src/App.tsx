@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react'
-import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
+import { BrowserRouter, Routes, Route, Navigate, useLocation } from 'react-router-dom'
 import { Toaster } from 'react-hot-toast'
 import { Sidebar, MobileNav, TopBar } from './components/layout/Navigation'
 import { initTheme } from './stores/appStore'
@@ -23,6 +23,7 @@ import AddInboxModal from './components/inbox/AddInboxModal'
 // Protected App Layout
 // ============================================================
 function AppLayout() {
+  const location = useLocation()
   const [paletteOpen, setPaletteOpen] = React.useState(false)
   const [addTaskOpen, setAddTaskOpen] = React.useState(false)
   const [addInboxOpen, setAddInboxOpen] = React.useState(false)
@@ -40,7 +41,7 @@ function AppLayout() {
   }, [])
 
   return (
-    <div className="flex h-screen bg-[#f8fafc] dark:bg-[#06090f] text-slate-900 dark:text-slate-100 overflow-hidden select-none relative">
+    <div className="flex h-screen bg-[#f8fafc] dark:bg-[#06090f] text-slate-900 dark:text-slate-100 overflow-hidden select-none relative transition-colors duration-300">
       {/* Ambient Studio Aurora Glows */}
       <div className="pointer-events-none fixed -top-32 left-1/4 w-[600px] h-[450px] bg-gradient-to-br from-primary-500/10 to-indigo-600/10 dark:from-primary-600/15 dark:to-indigo-600/15 rounded-full blur-[130px] -z-10" />
       <div className="pointer-events-none fixed top-1/3 -right-24 w-[500px] h-[450px] bg-gradient-to-br from-purple-500/10 to-pink-500/5 dark:from-purple-600/12 dark:to-pink-600/8 rounded-full blur-[140px] -z-10" />
@@ -58,18 +59,20 @@ function AppLayout() {
           onOpenAddInbox={() => setAddInboxOpen(true)}
         />
 
-        {/* Page content */}
-        <main className="flex-1 overflow-hidden">
-          <Routes>
-            <Route path="/"         element={<Dashboard />} />
-            <Route path="/inbox"    element={<InboxPage />} />
-            <Route path="/important" element={<ImportantPage />} />
-            <Route path="/tasks"    element={<TasksPage />} />
-            <Route path="/calendar" element={<CalendarPage />} />
-            <Route path="/copilot"  element={<CopilotPage />} />
-            <Route path="/settings" element={<SettingsPage />} />
-            <Route path="*"         element={<Navigate to="/" replace />} />
-          </Routes>
+        {/* Page content with smooth route transition */}
+        <main className="flex-1 overflow-hidden relative">
+          <div key={location.pathname} className="h-full w-full animate-fade-in will-change-transform">
+            <Routes location={location}>
+              <Route path="/"          element={<Dashboard />} />
+              <Route path="/inbox"     element={<InboxPage />} />
+              <Route path="/important" element={<ImportantPage />} />
+              <Route path="/tasks"     element={<TasksPage />} />
+              <Route path="/calendar"  element={<CalendarPage />} />
+              <Route path="/copilot"   element={<CopilotPage />} />
+              <Route path="/settings"  element={<SettingsPage />} />
+              <Route path="*"          element={<Navigate to="/" replace />} />
+            </Routes>
+          </div>
         </main>
 
         {/* Mobile bottom nav */}

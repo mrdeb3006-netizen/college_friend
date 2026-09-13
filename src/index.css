@@ -74,19 +74,29 @@ body {
 }
 
 /* ============================================================
-   Scrollbar Styling
+   Scrollbar Styling & Smooth Overscroll
    ============================================================ */
 ::-webkit-scrollbar {
   width: 6px;
   height: 6px;
 }
-::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-track {
+  background: transparent;
+}
 ::-webkit-scrollbar-thumb {
-  background-color: rgba(148, 163, 184, 0.35);
+  background-color: rgba(148, 163, 184, 0.28);
   border-radius: 9999px;
+  transition: background-color 0.25s ease;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background-color: rgba(148, 163, 184, 0.6);
+  background-color: rgba(148, 163, 184, 0.65);
+}
+
+/* Prevent harsh boundary snapping on mobile and trackpads */
+main, .overflow-y-auto {
+  scroll-behavior: smooth;
+  overscroll-behavior-y: contain;
+  -webkit-overflow-scrolling: touch;
 }
 
 /* ============================================================
@@ -102,12 +112,12 @@ body {
    Component Layer — Modern SaaS Design System
    ============================================================ */
 @layer components {
-  /* Cards */
+  /* Cards with smooth spring lift */
   .card {
-    @apply bg-white/95 dark:bg-slate-900/80 backdrop-blur-md rounded-2xl border border-slate-200/85 dark:border-slate-800/85 shadow-card transition-all duration-200;
+    @apply bg-white/95 dark:bg-slate-900/80 backdrop-blur-md rounded-2xl border border-slate-200/85 dark:border-slate-800/85 shadow-card transition-all duration-300 ease-out;
   }
   .card-hover {
-    @apply card hover:shadow-card-md hover:-translate-y-0.5 hover:border-primary-300/80 dark:hover:border-primary-700/80 cursor-pointer;
+    @apply card hover:shadow-card-md hover:-translate-y-1 hover:border-primary-300/80 dark:hover:border-primary-700/80 cursor-pointer;
   }
   .card-elevated {
     @apply bg-white dark:bg-slate-900 rounded-2xl border border-slate-200/90 dark:border-slate-800 shadow-card-md;

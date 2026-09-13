@@ -171,7 +171,7 @@ export function Checkbox({ checked, onChange, label, className }: CheckboxProps)
       <div
         onClick={() => onChange(!checked)}
         className={cn(
-          'w-5 h-5 rounded-lg border-2 flex items-center justify-center transition-all',
+          'w-5 h-5 rounded-lg border-2 flex items-center justify-center transition-all duration-200 ease-[cubic-bezier(0.16,1,0.3,1)] active:scale-90',
           checked
             ? 'bg-primary-600 border-primary-600 shadow-glow-primary scale-105'
             : 'border-slate-300 dark:border-slate-600 bg-white/50 dark:bg-slate-800/50 hover:border-primary-400'
@@ -267,11 +267,11 @@ interface ToggleProps {
 
 export function Toggle({ checked, onChange, label }: ToggleProps) {
   return (
-    <label className="flex items-center gap-3 cursor-pointer select-none">
+    <label className="flex items-center gap-3 cursor-pointer select-none group">
       <div
         onClick={() => onChange(!checked)}
         className={cn(
-          'relative w-11 h-6 rounded-full transition-colors duration-200 border border-transparent',
+          'relative w-11 h-6 rounded-full transition-colors duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] border border-transparent shadow-xs',
           checked
             ? 'bg-primary-600 shadow-glow-primary'
             : 'bg-slate-300 dark:bg-slate-700'
@@ -279,12 +279,12 @@ export function Toggle({ checked, onChange, label }: ToggleProps) {
       >
         <span
           className={cn(
-            'absolute top-0.5 w-5 h-5 bg-white rounded-full shadow-md transition-transform duration-200 ease-out',
+            'absolute top-0.5 w-5 h-5 bg-white rounded-full shadow-md transition-transform duration-300 ease-[cubic-bezier(0.16,1,0.3,1)]',
             checked ? 'translate-x-5.5' : 'translate-x-0.5'
           )}
         />
       </div>
-      {label && <span className="text-sm font-semibold text-slate-700 dark:text-slate-300">{label}</span>}
+      {label && <span className="text-sm font-semibold text-slate-700 dark:text-slate-300 group-hover:text-primary-600 dark:group-hover:text-primary-400 transition-colors">{label}</span>}
     </label>
   )
 }

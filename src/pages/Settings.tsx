@@ -65,13 +65,8 @@ export default function SettingsPage() {
   const clearAll = () => {
     if (confirm('Are you sure? This will delete all tasks, inbox notices, and AI chat history for a 100% clean slate.')) {
       demoStore.clearAllData()
-      toast.success('Clean slate activated! All demo & current items cleared.')
+      toast.success('Clean slate activated! All tasks and notices cleared.')
     }
-  }
-
-  const loadSamples = () => {
-    demoStore.loadSampleData()
-    toast.success('Starter sample items loaded!')
   }
 
   const tabs = [
@@ -227,15 +222,12 @@ export default function SettingsPage() {
                   <Button variant="secondary" onClick={exportData} className="flex-1">
                     <Download className="w-4 h-4" /> Export All Data (JSON)
                   </Button>
-                  <Button variant="secondary" onClick={loadSamples} className="flex-1">
-                    Load Starter Sample Pack
-                  </Button>
                 </div>
               </div>
               <div className="card p-6 space-y-3 border border-red-200 dark:border-red-900/40">
                 <h2 className="text-base font-semibold text-red-600 dark:text-red-400">Clean Slate / Reset</h2>
                 <p className="text-xs text-slate-500">
-                  Wipes all demo & current tasks, notices, and AI chats for a completely clean semester start. Your personal profile is preserved.
+                  Wipes all tasks, notices, and AI chats for a clean slate. Your personal profile is preserved.
                 </p>
                 <Button variant="danger" onClick={clearAll}>
                   <Trash2 className="w-4 h-4" /> Clean Slate (Wipe All Tasks & Notices)

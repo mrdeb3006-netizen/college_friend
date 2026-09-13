@@ -41,7 +41,7 @@ const INITIAL_TASKS: Task[] = []
 
 // Migration & cleanup key to clear any legacy demo material from browser storage
 const STORE_VERSION_KEY = 'ccc_clean_version'
-const CURRENT_VERSION = 'v3_clean_debendranath_no_college_branch'
+const CURRENT_VERSION = 'v5_pure_clean_zero_demo_samples'
 
 if (typeof window !== 'undefined' && window.localStorage) {
   try {
@@ -50,11 +50,7 @@ if (typeof window !== 'undefined' && window.localStorage) {
       const storedProfile = localStorage.getItem('ccc_profile')
       if (!storedProfile || storedProfile.includes('Arjun Sharma')) {
         localStorage.setItem('ccc_profile', JSON.stringify(DEFAULT_PROFILE))
-        localStorage.setItem('ccc_inbox', JSON.stringify(INITIAL_INBOX))
-        localStorage.setItem('ccc_tasks', JSON.stringify(INITIAL_TASKS))
-        localStorage.setItem('ccc_messages', JSON.stringify([]))
       } else {
-        // Upgrade existing profile with real name and remove college/branch
         try {
           const parsed = JSON.parse(storedProfile)
           parsed.name = 'Debendranath Bera'
@@ -68,6 +64,10 @@ if (typeof window !== 'undefined' && window.localStorage) {
           // ignore
         }
       }
+      // Ensure completely empty clean store with zero demo or sample clutter
+      localStorage.setItem('ccc_inbox', JSON.stringify([]))
+      localStorage.setItem('ccc_tasks', JSON.stringify([]))
+      localStorage.setItem('ccc_messages', JSON.stringify([]))
       localStorage.setItem(STORE_VERSION_KEY, CURRENT_VERSION)
     }
   } catch (err) {
@@ -94,13 +94,6 @@ function setStored<T>(key: string, value: T): void {
   } catch {
     console.warn('localStorage write failed')
   }
-}
-
-// Helper to generate upcoming relative date
-const addDays = (d: number) => {
-  const date = new Date()
-  date.setDate(date.getDate() + d)
-  return date.toISOString().split('T')[0]
 }
 
 // ============================================================
@@ -234,80 +227,6 @@ export const demoStore = {
     setStored('ccc_inbox', [])
     setStored('ccc_tasks', [])
     setStored('ccc_messages', [])
-  },
-
-  // Optional starter pack if user wishes to load realistic test items
-  loadSampleData(): void {
-    const sampleInbox: InboxItem[] = [
-      {
-        id: generateId(),
-        user_id: USER_ID,
-        title: 'National Hackathon — Smart India Hackathon',
-        description: 'Call for student teams to submit ideas for Smart India Hackathon. Registration portal is open.',
-        source: 'College Notice Board',
-        category: 'hackathon',
-        status: 'unread',
-        received_at: new Date().toISOString(),
-        event_date: addDays(25),
-        registration_deadline: addDays(10),
-        link: 'https://sih.gov.in',
-        attachment_url: null,
-        attachment_name: null,
-        is_important: true,
-        ai_extraction: {
-          title: 'Smart India Hackathon Registration',
-          category: 'hackathon',
-          summary: 'National level hackathon for college teams solving real world problems.',
-          eligibility: ['Undergraduate students in engineering/technology'],
-          event_date: addDays(25),
-          registration_deadline: addDays(10),
-          required_actions: ['Form a team of 6 members', 'Submit problem statement solution PPT by deadline'],
-          required_documents: ['College ID card', 'Team registration form'],
-          registration_link: 'https://sih.gov.in',
-          fees: 'Free',
-          location: 'Hybrid / Designated Nodal Centers',
-          organizer: 'Ministry of Education Innovation Cell',
-          contact_info: 'support@sih.gov.in',
-          important_conditions: ['Must have at least one female team member'],
-          missing_information: [],
-          ambiguities: [],
-        },
-        created_at: new Date().toISOString(),
-        updated_at: new Date().toISOString(),
-      },
-    ]
-
-    const sampleTasks: Task[] = [
-      {
-        id: generateId(),
-        user_id: USER_ID,
-        title: 'Complete Algorithm Lab Assignment',
-        description: 'Implement Graph algorithms (Dijkstra and Kruskal) with time complexity analysis.',
-        deadline: addDays(3),
-        priority: 'urgent_important',
-        ai_suggested_priority: 'urgent_important',
-        user_overrode_priority: false,
-        category: 'academic',
-        estimated_minutes: 90,
-        status: 'in_progress',
-        notes: 'Review code comments and test corner cases before submission.',
-        related_notice_id: null,
-        related_notice_title: null,
-        delegated_to: null,
-        delegation_note: null,
-        delegation_status: 'none',
-        subtasks: [
-          { id: generateId(), task_id: 'sample_t1', title: 'Implement Dijkstra in C++', is_completed: true, order_index: 0 },
-          { id: generateId(), task_id: 'sample_t1', title: 'Implement Kruskal with Disjoint Set', is_completed: false, order_index: 1 },
-          { id: generateId(), task_id: 'sample_t1', title: 'Write lab report and complexity charts', is_completed: false, order_index: 2 },
-        ],
-        created_at: new Date().toISOString(),
-        updated_at: new Date().toISOString(),
-      },
-    ]
-
-    setStored('ccc_inbox', sampleInbox)
-    setStored('ccc_tasks', sampleTasks)
   },
 
   // Onboarding

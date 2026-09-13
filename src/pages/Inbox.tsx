@@ -26,17 +26,6 @@ const STATUS_FILTERS: { value: InboxStatus | 'all'; label: string }[] = [
   { value: 'acted',    label: 'Acted' },
 ]
 
-const SAMPLE_NOTICES = [
-  {
-    label: '📝 Midterm Exam Schedule',
-    text: 'URGENT CIRCULAR: Midterm Examination for CS301 Algorithms scheduled for Oct 24, 2026 at 10:00 AM in Hall B. Registration deadline is Oct 18.',
-  },
-  {
-    label: '🚀 AI Innovation Hackathon',
-    text: 'Inter-College AI Hackathon: Registrations close on Oct 30, 2026. Teams of 2-4 members. 48-hour challenge with cash prize pool of $5000. Apply at https://hackathon.edu',
-  },
-]
-
 export default function InboxPage() {
   const [, refresh] = useState(0)
   const [showAdd, setShowAdd] = useState(false)
@@ -172,26 +161,6 @@ export default function InboxPage() {
                 {extracting ? <Loader2 className="w-4 h-4 animate-spin" /> : <Sparkles className="w-4 h-4" />}
                 {extracting ? 'Analyzing...' : 'Parse & Ingest'}
               </Button>
-            </div>
-
-            {/* Quick Sample Notice Chips */}
-            <div className="flex items-center gap-2 pt-1 overflow-x-auto no-scrollbar">
-              <span className="text-[10px] font-bold uppercase tracking-wider text-slate-400 dark:text-slate-500 shrink-0">
-                Sample tests:
-              </span>
-              {SAMPLE_NOTICES.map(sample => (
-                <button
-                  key={sample.label}
-                  type="button"
-                  onClick={() => {
-                    setQuickPaste(sample.text)
-                    handleQuickExtract(undefined, sample.text)
-                  }}
-                  className="text-[11px] font-semibold px-2.5 py-1 rounded-full bg-white/70 dark:bg-slate-800/80 hover:bg-primary-50 dark:hover:bg-primary-950/50 text-slate-700 dark:text-slate-300 border border-slate-200/80 dark:border-slate-700/80 hover:border-primary-400 dark:hover:border-primary-600 shrink-0 transition-all cursor-pointer"
-                >
-                  {sample.label}
-                </button>
-              ))}
             </div>
           </form>
         </div>

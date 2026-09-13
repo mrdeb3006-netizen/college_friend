@@ -106,14 +106,14 @@ export default function CalendarPage() {
     <PageLayout title="Calendar">
       {/* View Toggle + Navigation */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-5">
-        <div className="flex p-1 bg-slate-100 dark:bg-slate-800/90 rounded-2xl border border-slate-200/80 dark:border-slate-700/80 w-fit">
+        <div className="flex p-1 bg-slate-200/70 dark:bg-slate-900/80 rounded-2xl border border-slate-300/60 dark:border-slate-800 shadow-2xs w-fit">
           {(['month', 'week', 'upcoming'] as ViewMode[]).map(v => (
             <button
               key={v}
               onClick={() => setView(v)}
               className={`px-3.5 py-1.5 rounded-xl text-xs font-semibold transition-all capitalize select-none cursor-pointer ${
                 view === v
-                  ? 'bg-gradient-to-r from-primary-600 to-indigo-600 text-white shadow-sm'
+                  ? 'bg-gradient-to-r from-primary-600 to-indigo-600 text-white shadow-xs'
                   : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200'
               }`}
             >
@@ -123,14 +123,27 @@ export default function CalendarPage() {
         </div>
         {view !== 'upcoming' && (
           <div className="flex items-center gap-2">
-            <button onClick={() => navigate(-1)} className="p-2 rounded-xl hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors cursor-pointer border border-slate-200/60 dark:border-slate-700/60">
-              <ChevronLeft className="w-4 h-4" />
+            <button
+              onClick={() => navigate(-1)}
+              className="p-2 rounded-xl hover:bg-slate-100 dark:hover:bg-slate-800/80 transition-colors cursor-pointer border border-slate-200/80 dark:border-slate-800 shadow-2xs"
+              aria-label="Previous period"
+            >
+              <ChevronLeft className="w-4 h-4 text-slate-600 dark:text-slate-400" />
             </button>
-            <span className="text-xs font-bold text-slate-800 dark:text-slate-200 min-w-36 text-center">{headerTitle}</span>
-            <button onClick={() => navigate(1)} className="p-2 rounded-xl hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors cursor-pointer border border-slate-200/60 dark:border-slate-700/60">
-              <ChevronRight className="w-4 h-4" />
+            <span className="text-xs sm:text-sm font-bold text-slate-900 dark:text-slate-100 min-w-36 text-center">
+              {headerTitle}
+            </span>
+            <button
+              onClick={() => navigate(1)}
+              className="p-2 rounded-xl hover:bg-slate-100 dark:hover:bg-slate-800/80 transition-colors cursor-pointer border border-slate-200/80 dark:border-slate-800 shadow-2xs"
+              aria-label="Next period"
+            >
+              <ChevronRight className="w-4 h-4 text-slate-600 dark:text-slate-400" />
             </button>
-            <button onClick={() => setCurrentDate(new Date())} className="px-3 py-1.5 text-xs font-semibold rounded-xl bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-700 border border-slate-200/80 dark:border-slate-700 cursor-pointer">
+            <button
+              onClick={() => setCurrentDate(new Date())}
+              className="px-3 py-1.5 text-xs font-semibold rounded-xl bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700 border border-slate-200/80 dark:border-slate-700 shadow-2xs cursor-pointer"
+            >
               Today
             </button>
           </div>
@@ -138,28 +151,28 @@ export default function CalendarPage() {
       </div>
 
       {/* Legend */}
-      <div className="flex flex-wrap gap-4 mb-4 text-xs">
+      <div className="flex flex-wrap gap-4 mb-4 text-xs font-medium">
         {[
-          { color: 'bg-red-500',    label: 'Urgent Task' },
-          { color: 'bg-orange-500', label: 'Important Task' },
-          { color: 'bg-red-400',    label: 'Registration Deadline' },
-          { color: 'bg-blue-400',   label: 'Event' },
-          { color: 'bg-slate-400',  label: 'Other' },
+          { color: 'bg-red-500 ring-2 ring-red-500/20',       label: 'Urgent Task' },
+          { color: 'bg-orange-500 ring-2 ring-orange-500/20', label: 'Important Task' },
+          { color: 'bg-red-400 ring-2 ring-red-400/20',       label: 'Registration Deadline' },
+          { color: 'bg-blue-500 ring-2 ring-blue-500/20',     label: 'Event' },
+          { color: 'bg-slate-400 ring-2 ring-slate-400/20',   label: 'Other' },
         ].map(l => (
-          <div key={l.label} className="flex items-center gap-1.5">
+          <div key={l.label} className="flex items-center gap-2">
             <div className={`w-2.5 h-2.5 rounded-full ${l.color}`} />
-            <span className="text-slate-500 dark:text-slate-400">{l.label}</span>
+            <span className="text-slate-600 dark:text-slate-400">{l.label}</span>
           </div>
         ))}
       </div>
 
       {/* Month View */}
       {view === 'month' && (
-        <div className="card overflow-hidden">
+        <div className="card overflow-hidden shadow-card border border-slate-200/80 dark:border-slate-800">
           {/* Day headers */}
-          <div className="grid grid-cols-7 border-b border-slate-200 dark:border-slate-700">
+          <div className="grid grid-cols-7 border-b border-slate-200/80 dark:border-slate-800 bg-slate-50/60 dark:bg-slate-900/40">
             {['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'].map(d => (
-              <div key={d} className="py-2 text-center text-xs font-semibold text-slate-500 dark:text-slate-400 border-r last:border-r-0 border-slate-200 dark:border-slate-700">
+              <div key={d} className="py-2.5 text-center text-xs font-bold text-slate-600 dark:text-slate-400 border-r last:border-r-0 border-slate-200/60 dark:border-slate-800">
                 {d}
               </div>
             ))}
@@ -173,29 +186,31 @@ export default function CalendarPage() {
               return (
                 <div
                   key={i}
-                  className={`min-h-20 p-1.5 border-r border-b last:border-r-0 border-slate-200 dark:border-slate-700 ${
-                    !isCurrentMonth ? 'bg-slate-50 dark:bg-slate-900/30' : ''
+                  className={`min-h-24 p-2 border-r border-b last:border-r-0 border-slate-200/70 dark:border-slate-800/80 transition-colors ${
+                    !isCurrentMonth
+                      ? 'bg-slate-50/40 dark:bg-slate-950/40 text-slate-400'
+                      : 'hover:bg-slate-50/70 dark:hover:bg-slate-800/30'
                   }`}
                 >
-                  <div className={`w-6 h-6 rounded-full flex items-center justify-center text-xs font-semibold mb-1 ${
+                  <div className={`w-6 h-6 rounded-full flex items-center justify-center text-xs font-bold mb-1.5 ${
                     isCurrentDay
-                      ? 'bg-primary-500 text-white'
-                      : isCurrentMonth ? 'text-slate-700 dark:text-slate-300' : 'text-slate-400 dark:text-slate-600'
+                      ? 'bg-gradient-to-r from-primary-600 to-indigo-600 text-white shadow-glow-primary'
+                      : isCurrentMonth ? 'text-slate-800 dark:text-slate-200' : 'text-slate-400 dark:text-slate-600'
                   }`}>
                     {format(day, 'd')}
                   </div>
-                  <div className="space-y-0.5">
+                  <div className="space-y-1">
                     {dayEvents.slice(0, 3).map(evt => (
                       <div
                         key={evt.id}
-                        className={`flex items-center gap-1 px-1 py-0.5 rounded text-[10px] text-white leading-tight ${getEventColor(evt)}`}
+                        className={`flex items-center gap-1 px-1.5 py-0.5 rounded-md text-[10px] font-semibold text-white leading-tight shadow-2xs ${getEventColor(evt)}`}
                         title={evt.title}
                       >
                         <span className="truncate">{evt.title}</span>
                       </div>
                     ))}
                     {dayEvents.length > 3 && (
-                      <div className="text-[10px] text-slate-400 pl-1">+{dayEvents.length - 3} more</div>
+                      <div className="text-[10px] font-bold text-slate-400 pl-1">+{dayEvents.length - 3} more</div>
                     )}
                   </div>
                 </div>
@@ -207,29 +222,29 @@ export default function CalendarPage() {
 
       {/* Week View */}
       {view === 'week' && (
-        <div className="card overflow-hidden">
-          <div className="grid grid-cols-7 divide-x divide-slate-200 dark:divide-slate-700">
+        <div className="card overflow-hidden shadow-card border border-slate-200/80 dark:border-slate-800">
+          <div className="grid grid-cols-7 divide-x divide-slate-200/80 dark:divide-slate-800">
             {weekDays.map(day => {
               const dayEvents = eventsOnDay(day)
               const isCurrentDay = isToday(day)
               return (
-                <div key={day.toISOString()} className="flex flex-col">
-                  <div className={`py-3 text-center border-b border-slate-200 dark:border-slate-700 ${isCurrentDay ? 'bg-primary-50 dark:bg-primary-900/20' : ''}`}>
-                    <p className="text-xs text-slate-500">{format(day, 'EEE')}</p>
-                    <div className={`w-8 h-8 rounded-full flex items-center justify-center mx-auto mt-1 text-sm font-bold ${
-                      isCurrentDay ? 'bg-primary-500 text-white' : 'text-slate-700 dark:text-slate-300'
+                <div key={day.toISOString()} className="flex flex-col min-h-64">
+                  <div className={`py-3 text-center border-b border-slate-200/80 dark:border-slate-800 ${isCurrentDay ? 'bg-primary-50/60 dark:bg-primary-950/40' : 'bg-slate-50/40 dark:bg-slate-900/30'}`}>
+                    <p className="text-xs font-bold text-slate-500 uppercase tracking-wider">{format(day, 'EEE')}</p>
+                    <div className={`w-8 h-8 rounded-full flex items-center justify-center mx-auto mt-1 text-sm font-extrabold ${
+                      isCurrentDay ? 'bg-gradient-to-r from-primary-600 to-indigo-600 text-white shadow-glow-primary' : 'text-slate-800 dark:text-slate-200'
                     }`}>
                       {format(day, 'd')}
                     </div>
                   </div>
-                  <div className="p-1.5 space-y-1 min-h-32">
+                  <div className="p-2 space-y-1.5 flex-1">
                     {dayEvents.map(evt => (
                       <div
                         key={evt.id}
-                        className={`px-2 py-1.5 rounded-lg text-xs text-white leading-tight ${getEventColor(evt)}`}
+                        className={`px-2 py-1.5 rounded-xl text-xs text-white leading-tight shadow-2xs ${getEventColor(evt)}`}
                         title={evt.title}
                       >
-                        <p className="truncate font-medium">{evt.title}</p>
+                        <p className="truncate font-semibold">{evt.title}</p>
                       </div>
                     ))}
                   </div>
@@ -245,24 +260,24 @@ export default function CalendarPage() {
         <div className="space-y-3">
           {upcoming.length === 0 ? (
             <Card>
-              <div className="py-12 text-center">
-                <CalIcon className="w-10 h-10 text-slate-300 mx-auto mb-3" />
-                <p className="text-slate-500">No upcoming events or deadlines.</p>
+              <div className="py-16 text-center">
+                <CalIcon className="w-12 h-12 text-slate-300 dark:text-slate-600 mx-auto mb-3" />
+                <p className="text-slate-600 dark:text-slate-400 font-medium">No upcoming events or deadlines recorded.</p>
               </div>
             </Card>
           ) : (
             upcoming.map(evt => (
-              <div key={evt.id} className="card p-4 flex items-center gap-4">
-                <div className={`w-2 h-10 rounded-full shrink-0 ${getEventColor(evt)}`} />
-                <div className="w-12 text-center shrink-0">
-                  <p className="text-xs text-slate-400">{format(evt.date, 'EEE')}</p>
-                  <p className="text-lg font-bold text-slate-700 dark:text-slate-300">{format(evt.date, 'd')}</p>
-                  <p className="text-xs text-slate-400">{format(evt.date, 'MMM')}</p>
+              <div key={evt.id} className="card p-4 flex items-center gap-4 hover:shadow-card-md hover:border-primary-300 dark:hover:border-primary-700/60 transition-all">
+                <div className={`w-2 h-12 rounded-full shrink-0 ${getEventColor(evt)}`} />
+                <div className="w-14 text-center shrink-0 bg-slate-50 dark:bg-slate-800/80 py-1.5 rounded-xl border border-slate-200/80 dark:border-slate-700/80">
+                  <p className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">{format(evt.date, 'EEE')}</p>
+                  <p className="text-lg font-extrabold text-slate-900 dark:text-slate-100">{format(evt.date, 'd')}</p>
+                  <p className="text-[10px] font-semibold text-slate-400 uppercase tracking-wider">{format(evt.date, 'MMM')}</p>
                 </div>
                 <div className="flex-1 min-w-0">
-                  <p className="text-sm font-semibold text-slate-900 dark:text-slate-100 truncate">{evt.title}</p>
-                  <p className="text-xs text-slate-500 mt-0.5">
-                    {evt.type === 'registration' ? 'Registration Deadline' : evt.type === 'event' ? 'Event' : 'Task Deadline'}
+                  <p className="text-sm font-bold text-slate-900 dark:text-slate-100 truncate">{evt.title}</p>
+                  <p className="text-xs text-slate-500 dark:text-slate-400 mt-0.5">
+                    {evt.type === 'registration' ? '📝 Registration Deadline' : evt.type === 'event' ? '📅 Campus Event' : '🎯 Task Deadline'}
                     {evt.category && ` · ${evt.category}`}
                   </p>
                 </div>

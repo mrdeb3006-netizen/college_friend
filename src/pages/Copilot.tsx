@@ -110,31 +110,31 @@ export default function CopilotPage() {
   return (
     <div className="flex flex-col h-full">
       {/* Header */}
-      <div className="flex items-center justify-between px-6 pt-5 pb-3 border-b border-slate-200 dark:border-slate-700 shrink-0">
-        <div className="flex items-center gap-3">
-          <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-primary-500 to-purple-600 flex items-center justify-center shadow-sm">
+      <div className="flex items-center justify-between px-6 py-4 border-b border-slate-200/80 dark:border-slate-800/80 bg-white/50 dark:bg-slate-950/30 backdrop-blur-md shrink-0">
+        <div className="flex items-center gap-3.5">
+          <div className="w-10 h-10 rounded-2xl bg-gradient-to-tr from-primary-600 via-indigo-500 to-purple-600 flex items-center justify-center shadow-glow-primary">
             <Bot className="w-5 h-5 text-white" />
           </div>
           <div>
             <div className="flex items-center gap-2">
-              <h1 className="text-base font-bold text-slate-900 dark:text-slate-100">Student AI Copilot</h1>
-              <span className="flex items-center gap-1 text-[11px] px-2 py-0.5 rounded-full bg-emerald-50 dark:bg-emerald-950/40 text-emerald-600 dark:text-emerald-400 font-semibold border border-emerald-200 dark:border-emerald-800">
+              <h1 className="text-base font-extrabold text-slate-900 dark:text-slate-100 tracking-tight">Student AI Copilot</h1>
+              <span className="flex items-center gap-1.5 text-[11px] px-2.5 py-0.5 rounded-full bg-emerald-50 dark:bg-emerald-950/40 text-emerald-600 dark:text-emerald-400 font-bold border border-emerald-200/80 dark:border-emerald-800/60 shadow-2xs">
                 <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
-                Active
+                Live Context
               </span>
             </div>
-            <p className="text-xs text-slate-500">Autonomous context-aware student assistant</p>
+            <p className="text-xs text-slate-500 dark:text-slate-400">Autonomous context-aware personal assistant</p>
           </div>
         </div>
         {messages.length > 0 && (
-          <Button variant="ghost" size="sm" onClick={clearChat}>
-            <Trash2 className="w-3.5 h-3.5" /> Clear
+          <Button variant="ghost" size="sm" onClick={clearChat} className="cursor-pointer">
+            <Trash2 className="w-3.5 h-3.5 text-slate-400 hover:text-red-500 transition-colors" /> Clear Chat
           </Button>
         )}
       </div>
 
       {/* Messages */}
-      <div className="flex-1 overflow-y-auto px-4 md:px-6 py-4 space-y-4">
+      <div className="flex-1 overflow-y-auto px-4 md:px-7 py-5 space-y-4">
         {messages.length === 0 ? (
           <WelcomeState name={profile.name} />
         ) : (
@@ -148,14 +148,14 @@ export default function CopilotPage() {
 
       {/* Prompt chips */}
       {messages.length === 0 && (
-        <div className="px-4 md:px-6 pb-3 flex flex-wrap gap-2 shrink-0">
+        <div className="px-4 md:px-7 pb-3 flex flex-wrap gap-2 shrink-0">
           {PROMPT_CHIPS.map(chip => (
             <button
               key={chip.label}
               onClick={() => sendMessage(chip.text)}
-              className="flex items-center gap-1.5 px-3 py-2 rounded-xl text-xs font-medium border border-slate-200 dark:border-slate-700 text-slate-600 dark:text-slate-400 hover:border-primary-300 hover:text-primary-600 dark:hover:text-primary-400 transition-colors bg-white dark:bg-slate-800"
+              className="flex items-center gap-2 px-3.5 py-2 rounded-xl text-xs font-semibold border border-slate-200/90 dark:border-slate-800 text-slate-700 dark:text-slate-300 hover:border-primary-400 hover:text-primary-600 dark:hover:text-primary-400 transition-all bg-white/80 dark:bg-slate-900/80 shadow-2xs hover:shadow-card hover:-translate-y-0.5 cursor-pointer"
             >
-              <chip.icon className="w-3.5 h-3.5" />
+              <chip.icon className="w-3.5 h-3.5 text-primary-500" />
               {chip.label}
             </button>
           ))}

@@ -152,7 +152,7 @@ export default function CommandPalette({
         onClick={e => e.stopPropagation()}
       >
         {/* Search Input Bar */}
-        <div className="relative flex items-center px-4.5 py-4 border-b border-slate-200/80 dark:border-slate-800">
+        <div className="relative flex items-center px-4 py-4 border-b border-slate-200/80 dark:border-slate-800">
           <Search className="w-5 h-5 text-primary-500 shrink-0" />
           <input
             ref={inputRef}

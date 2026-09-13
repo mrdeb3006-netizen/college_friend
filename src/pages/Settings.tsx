@@ -85,16 +85,16 @@ export default function SettingsPage() {
     <PageLayout title="Settings">
       <div className="flex flex-col md:flex-row gap-6">
         {/* Tab nav */}
-        <div className="md:w-44 shrink-0">
-          <nav className="flex md:flex-col gap-1.5 flex-wrap">
+        <div className="md:w-48 shrink-0">
+          <nav className="flex md:flex-col gap-1.5 flex-wrap p-1.5 bg-slate-200/60 dark:bg-slate-900/60 rounded-2xl border border-slate-200/80 dark:border-slate-800">
             {tabs.map(tab => (
               <button
                 key={tab.id}
                 onClick={() => setActiveTab(tab.id)}
-                className={`flex items-center gap-2 px-3 py-2.5 rounded-xl text-sm font-medium transition-all text-left ${
+                className={`flex items-center gap-2.5 px-3.5 py-2.5 rounded-xl text-xs font-bold transition-all text-left cursor-pointer ${
                   activeTab === tab.id
-                    ? 'bg-primary-50 dark:bg-primary-900/20 text-primary-700 dark:text-primary-400'
-                    : 'text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800'
+                    ? 'bg-white dark:bg-slate-800 text-primary-600 dark:text-primary-400 shadow-xs'
+                    : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200 hover:bg-white/50 dark:hover:bg-slate-800/40'
                 }`}
               >
                 <tab.icon className="w-4 h-4 shrink-0" />

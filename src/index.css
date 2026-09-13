@@ -238,24 +238,38 @@ body {
     @apply bg-gradient-to-r from-primary-600 via-indigo-600 to-purple-600 bg-clip-text text-transparent;
   }
 
+  /* Eisenhower Matrix Quadrant Cards */
+  .matrix-q1 {
+    @apply bg-red-500/[0.03] dark:bg-red-950/20 border-red-200/80 dark:border-red-900/40 rounded-2xl border transition-all;
+  }
+  .matrix-q2 {
+    @apply bg-amber-500/[0.03] dark:bg-amber-950/20 border-amber-200/80 dark:border-amber-900/40 rounded-2xl border transition-all;
+  }
+  .matrix-q3 {
+    @apply bg-sky-500/[0.03] dark:bg-sky-950/20 border-sky-200/80 dark:border-sky-900/40 rounded-2xl border transition-all;
+  }
+  .matrix-q4 {
+    @apply bg-slate-500/[0.03] dark:bg-slate-900/40 border-slate-200/80 dark:border-slate-800/60 rounded-2xl border transition-all;
+  }
+
   /* Chat bubble */
   .chat-bubble-user {
     @apply bg-gradient-to-r from-primary-600 to-indigo-600 text-white rounded-2xl rounded-tr-sm px-4 py-3 max-w-[80%] ml-auto shadow-sm text-sm leading-relaxed;
   }
   .chat-bubble-ai {
-    @apply bg-white/95 dark:bg-slate-900/90 border border-slate-200/90 dark:border-slate-800 rounded-2xl rounded-tl-sm px-4 py-3 max-w-[85%] shadow-card text-sm leading-relaxed;
+    @apply bg-white/95 dark:bg-slate-900/90 border border-slate-200/90 dark:border-slate-800/90 rounded-2xl rounded-tl-sm px-4 py-3.5 max-w-[85%] shadow-card text-sm leading-relaxed backdrop-blur-md;
   }
 
   /* Skeleton loader */
   .skeleton {
-    @apply animate-pulse bg-slate-200/80 dark:bg-slate-800 rounded-xl;
+    @apply animate-pulse bg-slate-200/80 dark:bg-slate-800/80 rounded-xl;
   }
 
-  /* Priority dot */
-  .priority-dot-urgent    { @apply inline-block w-2.5 h-2.5 rounded-full bg-red-500 ring-4 ring-red-500/20; }
-  .priority-dot-important { @apply inline-block w-2.5 h-2.5 rounded-full bg-amber-500 ring-4 ring-amber-500/20; }
-  .priority-dot-notable   { @apply inline-block w-2.5 h-2.5 rounded-full bg-sky-500 ring-4 ring-sky-500/20; }
-  .priority-dot-low       { @apply inline-block w-2.5 h-2.5 rounded-full bg-slate-400 ring-4 ring-slate-400/20; }
+  /* Priority dot with ambient ring */
+  .priority-dot-urgent    { @apply inline-block w-2.5 h-2.5 rounded-full bg-red-500 ring-4 ring-red-500/25; }
+  .priority-dot-important { @apply inline-block w-2.5 h-2.5 rounded-full bg-amber-500 ring-4 ring-amber-500/25; }
+  .priority-dot-notable   { @apply inline-block w-2.5 h-2.5 rounded-full bg-sky-500 ring-4 ring-sky-500/25; }
+  .priority-dot-low       { @apply inline-block w-2.5 h-2.5 rounded-full bg-slate-400 ring-4 ring-slate-400/25; }
 
   /* Hide scrollbar */
   .no-scrollbar::-webkit-scrollbar { display: none; }

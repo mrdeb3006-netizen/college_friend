@@ -132,8 +132,8 @@ export function Drawer({ open, onClose, title, children, side = 'right', width =
       {/* Panel */}
       <div
         className={cn(
-          'absolute top-0 bottom-0 w-full bg-white dark:bg-slate-800',
-          'border-slate-200 dark:border-slate-700 shadow-2xl',
+          'absolute top-0 bottom-0 w-full bg-white/95 dark:bg-slate-900/95 backdrop-blur-2xl',
+          'border-slate-200/90 dark:border-slate-800 shadow-2xl',
           'transition-transform duration-300 ease-out flex flex-col',
           width,
           side === 'right' ? 'right-0 border-l' : 'left-0 border-r',
@@ -143,7 +143,7 @@ export function Drawer({ open, onClose, title, children, side = 'right', width =
         )}
       >
         {/* Header */}
-        <div className="flex items-center justify-between p-5 border-b border-slate-200 dark:border-slate-700 shrink-0">
+        <div className="flex items-center justify-between p-5 border-b border-slate-200/80 dark:border-slate-800 shrink-0">
           {title && <h2 className="text-lg font-semibold text-slate-900 dark:text-slate-100">{title}</h2>}
           <button
             onClick={onClose}

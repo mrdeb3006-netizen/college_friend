@@ -5,17 +5,19 @@ interface BadgeProps {
   children: React.ReactNode
   className?: string
   size?: 'sm' | 'md'
+  icon?: React.ReactNode
 }
 
-export function Badge({ children, className, size = 'sm' }: BadgeProps) {
+export function Badge({ children, className, size = 'sm', icon }: BadgeProps) {
   return (
     <span
       className={cn(
-        'inline-flex items-center gap-1.5 font-semibold rounded-full tracking-wide transition-colors select-none',
+        'inline-flex items-center gap-1.5 font-semibold rounded-full tracking-wide transition-all select-none shadow-2xs',
         size === 'sm' ? 'px-2.5 py-0.5 text-[11px]' : 'px-3 py-1 text-xs',
         className
       )}
     >
+      {icon && <span className="shrink-0">{icon}</span>}
       {children}
     </span>
   )
@@ -25,24 +27,24 @@ export function PriorityBadge({ priority }: { priority: string }) {
   const map: Record<string, { label: string; dotClass: string; cls: string; pulse?: boolean }> = {
     urgent_important: {
       label: 'Urgent',
-      dotClass: 'bg-red-500 ring-2 ring-red-500/30',
-      cls: 'priority-urgent',
+      dotClass: 'bg-red-500 ring-4 ring-red-500/25',
+      cls: 'priority-urgent shadow-xs',
       pulse: true,
     },
     important_not_urgent: {
       label: 'Important',
-      dotClass: 'bg-amber-500 ring-2 ring-amber-500/30',
-      cls: 'priority-important',
+      dotClass: 'bg-amber-500 ring-4 ring-amber-500/25',
+      cls: 'priority-important shadow-xs',
     },
     urgent_not_important: {
       label: 'Notable',
-      dotClass: 'bg-sky-500 ring-2 ring-sky-500/30',
-      cls: 'priority-notable',
+      dotClass: 'bg-sky-500 ring-4 ring-sky-500/25',
+      cls: 'priority-notable shadow-xs',
     },
     low: {
       label: 'Low',
-      dotClass: 'bg-slate-400 ring-2 ring-slate-400/30',
-      cls: 'priority-low',
+      dotClass: 'bg-slate-400 ring-4 ring-slate-400/20',
+      cls: 'priority-low shadow-xs',
     },
   }
   const info = map[priority] || map.low
@@ -57,8 +59,8 @@ export function PriorityBadge({ priority }: { priority: string }) {
 export function CategoryBadge({ category }: { category: string }) {
   const label = category.charAt(0).toUpperCase() + category.slice(1)
   return (
-    <Badge className={`category-${category}`}>
-      <span className="w-1.5 h-1.5 rounded-full bg-current opacity-70 shrink-0" />
+    <Badge className={`category-${category} shadow-2xs`}>
+      <span className="w-1.5 h-1.5 rounded-full bg-current opacity-80 shrink-0" />
       {label}
     </Badge>
   )

@@ -40,7 +40,7 @@ function AppLayout() {
   }, [])
 
   return (
-    <div className="flex h-screen bg-slate-100 dark:bg-slate-950 overflow-hidden">
+    <div className="flex h-screen bg-[#f8fafc] dark:bg-[#06090f] text-slate-900 dark:text-slate-100 overflow-hidden select-none">
       {/* Desktop Sidebar */}
       <Sidebar />
 

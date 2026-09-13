@@ -146,20 +146,20 @@ function ImportantCard({
   const isUrgent = daysUntilDeadline !== null && daysUntilDeadline <= 3
 
   return (
-    <div className={`card p-4 ${isUrgent ? 'border-l-4 border-red-400' : 'border-l-4 border-yellow-400'}`}>
-      <div className="flex items-start gap-3">
-        <Star className="w-5 h-5 text-yellow-500 fill-current shrink-0 mt-0.5" />
+    <div className={`card p-5 hover:shadow-card-md hover:-translate-y-0.5 transition-all cursor-pointer ${isUrgent ? 'border-l-4 border-red-500' : 'border-l-4 border-amber-400'}`} onClick={onView}>
+      <div className="flex items-start gap-3.5">
+        <Star className="w-5 h-5 text-amber-500 fill-amber-500 shrink-0 mt-0.5" />
         <div className="flex-1 min-w-0">
-          <div className="flex items-start gap-2">
-            <div className="flex-1">
-              <p className="text-sm font-semibold text-slate-900 dark:text-slate-100">{item.title}</p>
+          <div className="flex items-start justify-between gap-2">
+            <div className="flex-1 min-w-0">
+              <p className="text-sm font-bold text-slate-900 dark:text-slate-100">{item.title}</p>
               {item.description && (
-                <p className="text-xs text-slate-500 mt-0.5 line-clamp-2">{item.description}</p>
+                <p className="text-xs text-slate-500 dark:text-slate-400 mt-1 line-clamp-2">{item.description}</p>
               )}
             </div>
             <button
-              onClick={onRemove}
-              className="p-1 text-slate-300 hover:text-red-400 transition-colors shrink-0"
+              onClick={e => { e.stopPropagation(); onRemove() }}
+              className="p-1 rounded-lg text-slate-400 hover:text-red-500 hover:bg-red-50 dark:hover:bg-red-950/40 transition-colors shrink-0 cursor-pointer"
               title="Remove star"
             >
               ✕
@@ -167,32 +167,32 @@ function ImportantCard({
           </div>
 
           {/* Dates */}
-          <div className="flex flex-wrap gap-3 mt-2">
+          <div className="flex flex-wrap gap-3 mt-2.5">
             {item.registration_deadline && (
-              <div className={`text-xs font-semibold ${isUrgent ? 'text-red-600 dark:text-red-400' : 'text-orange-600 dark:text-orange-400'}`}>
-                📅 Registration closes: {format(new Date(item.registration_deadline), 'MMM d')}
+              <div className={`text-xs font-semibold px-2 py-0.5 rounded-md ${isUrgent ? 'bg-red-50 dark:bg-red-950/40 text-red-600 dark:text-red-400 border border-red-200 dark:border-red-900/50' : 'bg-amber-50 dark:bg-amber-950/40 text-amber-600 dark:text-amber-400 border border-amber-200 dark:border-amber-900/50'}`}>
+                📅 Registration: {format(new Date(item.registration_deadline), 'MMM d, yyyy')}
                 {daysUntilDeadline !== null && (
-                  <span className="ml-1 font-normal">
+                  <span className="ml-1 font-bold">
                     ({daysUntilDeadline <= 0 ? 'overdue' : `${daysUntilDeadline}d left`})
                   </span>
                 )}
               </div>
             )}
             {item.event_date && (
-              <div className="text-xs text-blue-600 dark:text-blue-400">
-                🗓️ Event: {format(new Date(item.event_date), 'MMM d')}
+              <div className="text-xs font-semibold px-2 py-0.5 rounded-md bg-blue-50 dark:bg-blue-950/40 text-blue-600 dark:text-blue-400 border border-blue-200 dark:border-blue-900/50">
+                🗓️ Event: {format(new Date(item.event_date), 'MMM d, yyyy')}
               </div>
             )}
           </div>
 
-          <div className="flex flex-wrap items-center gap-2 mt-3">
+          <div className="flex flex-wrap items-center justify-between gap-2 mt-3.5 pt-2 border-t border-slate-100 dark:border-slate-800/80">
             <CategoryBadge category={item.category} />
-            <div className="ml-auto flex gap-2">
-              <button onClick={onView} className="btn btn-ghost btn-sm text-xs">
+            <div className="flex gap-2" onClick={e => e.stopPropagation()}>
+              <button onClick={onView} className="btn btn-secondary btn-sm text-xs cursor-pointer">
                 View Details
               </button>
-              <button onClick={onCreateTask} className="btn btn-primary btn-sm text-xs">
-                <Plus className="w-3 h-3" /> Create Task
+              <button onClick={onCreateTask} className="btn btn-primary btn-sm text-xs cursor-pointer">
+                <Plus className="w-3.5 h-3.5" /> Create Task
               </button>
             </div>
           </div>

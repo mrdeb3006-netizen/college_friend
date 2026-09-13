@@ -114,15 +114,15 @@ export default function TasksPage() {
         title="My Tasks"
         subtitle={`${completedCount}/${totalCount} completed (${progressPercent}%)`}
         action={
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-2.5">
             {/* View Switcher */}
-            <div className="flex bg-slate-100 dark:bg-slate-800 p-1 rounded-xl border border-slate-200 dark:border-slate-700">
+            <div className="flex bg-slate-200/70 dark:bg-slate-900/80 p-1 rounded-xl border border-slate-300/60 dark:border-slate-800 shadow-2xs">
               <button
                 onClick={() => setViewMode('list')}
-                className={`flex items-center gap-1.5 px-3 py-1 rounded-lg text-xs font-medium transition-all ${
+                className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold transition-all cursor-pointer ${
                   viewMode === 'list'
-                    ? 'bg-white dark:bg-slate-700 text-primary-600 dark:text-primary-300 shadow-2xs'
-                    : 'text-slate-500 hover:text-slate-900 dark:hover:text-slate-200'
+                    ? 'bg-white dark:bg-slate-800 text-primary-600 dark:text-primary-400 shadow-xs'
+                    : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200'
                 }`}
                 title="List View"
               >
@@ -131,22 +131,22 @@ export default function TasksPage() {
               </button>
               <button
                 onClick={() => setViewMode('matrix')}
-                className={`flex items-center gap-1.5 px-3 py-1 rounded-lg text-xs font-medium transition-all ${
+                className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold transition-all cursor-pointer ${
                   viewMode === 'matrix'
-                    ? 'bg-white dark:bg-slate-700 text-primary-600 dark:text-primary-300 shadow-2xs'
-                    : 'text-slate-500 hover:text-slate-900 dark:hover:text-slate-200'
+                    ? 'bg-white dark:bg-slate-800 text-primary-600 dark:text-primary-400 shadow-xs'
+                    : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200'
                 }`}
                 title="Eisenhower Priority Matrix"
               >
                 <Grid2X2 className="w-3.5 h-3.5" />
-                <span className="hidden sm:inline">Eisenhower</span>
+                <span className="hidden sm:inline">Matrix</span>
               </button>
               <button
                 onClick={() => setViewMode('kanban')}
-                className={`flex items-center gap-1.5 px-3 py-1 rounded-lg text-xs font-medium transition-all ${
+                className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold transition-all cursor-pointer ${
                   viewMode === 'kanban'
-                    ? 'bg-white dark:bg-slate-700 text-primary-600 dark:text-primary-300 shadow-2xs'
-                    : 'text-slate-500 hover:text-slate-900 dark:hover:text-slate-200'
+                    ? 'bg-white dark:bg-slate-800 text-primary-600 dark:text-primary-400 shadow-xs'
+                    : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200'
                 }`}
                 title="Kanban Board View"
               >
@@ -163,14 +163,14 @@ export default function TasksPage() {
       >
         {/* Completion Progress Bar */}
         {totalCount > 0 && (
-          <div className="mb-4 card p-3.5 shadow-2xs">
-            <div className="flex items-center justify-between text-xs font-semibold mb-2">
+          <div className="mb-4 card p-4 shadow-card">
+            <div className="flex items-center justify-between text-xs font-bold mb-2">
               <span className="text-slate-700 dark:text-slate-300">Task Completion Velocity</span>
               <span className="text-primary-600 dark:text-primary-400 font-extrabold">{progressPercent}%</span>
             </div>
-            <div className="w-full h-2 bg-slate-100 dark:bg-slate-800 rounded-full overflow-hidden">
+            <div className="w-full h-2.5 bg-slate-100 dark:bg-slate-800/80 rounded-full overflow-hidden p-0.5">
               <div
-                className="h-full bg-gradient-to-r from-primary-600 via-indigo-500 to-emerald-500 rounded-full transition-all duration-500"
+                className="h-full bg-gradient-to-r from-primary-600 via-indigo-500 to-emerald-500 rounded-full transition-all duration-500 shadow-sm"
                 style={{ width: `${progressPercent}%` }}
               />
             </div>
@@ -178,8 +178,8 @@ export default function TasksPage() {
         )}
 
         {/* Quick Add Bar (Linear Style) */}
-        <form onSubmit={handleQuickAdd} className="mb-5 card p-2 flex flex-col sm:flex-row items-center gap-2 shadow-2xs">
-          <div className="flex-1 flex items-center gap-2 px-2 w-full">
+        <form onSubmit={handleQuickAdd} className="mb-5 card p-2 flex flex-col sm:flex-row items-center gap-2.5 shadow-card hover:border-primary-300 dark:hover:border-primary-700/60 transition-all">
+          <div className="flex-1 flex items-center gap-2.5 px-3 w-full">
             <Plus className="w-4 h-4 text-primary-500 shrink-0" />
             <input
               className="w-full bg-transparent border-none text-sm text-slate-900 dark:text-slate-100 placeholder-slate-400 dark:placeholder-slate-500 focus:outline-none"
@@ -188,11 +188,11 @@ export default function TasksPage() {
               onChange={e => setQuickTitle(e.target.value)}
             />
           </div>
-          <div className="flex items-center gap-2 w-full sm:w-auto shrink-0 justify-end">
+          <div className="flex items-center gap-2 w-full sm:w-auto shrink-0 justify-end px-1">
             <select
               value={quickPriority}
               onChange={e => setQuickPriority(e.target.value as Priority)}
-              className="select h-9 text-xs sm:w-44 bg-slate-50 dark:bg-slate-800"
+              className="select h-9 text-xs sm:w-48 bg-slate-50 dark:bg-slate-800/80 border-slate-200 dark:border-slate-700/80"
             >
               <option value="urgent_important">🔥 Urgent & Important</option>
               <option value="important_not_urgent">🎯 Important (Schedule)</option>
@@ -209,10 +209,10 @@ export default function TasksPage() {
         {/* Search & Filters */}
         <div className="flex flex-wrap items-center gap-3 mb-5">
           <div className="relative flex-1 min-w-48">
-            <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
+            <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
             <input
-              className="input pl-9 h-9 text-sm"
-              placeholder="Filter tasks by name or notes..."
+              className="input pl-10 h-10 text-sm shadow-2xs"
+              placeholder="Filter tasks by name, notes or category..."
               value={search}
               onChange={e => setSearch(e.target.value)}
               id="tasks-search"
@@ -220,16 +220,16 @@ export default function TasksPage() {
           </div>
           <button
             onClick={() => setShowFilters(v => !v)}
-            className={`btn btn-secondary btn-sm gap-1.5 ${showFilters ? 'ring-2 ring-primary-400' : ''}`}
+            className={`btn btn-secondary btn-sm gap-1.5 h-10 ${showFilters ? 'ring-2 ring-primary-500/40 border-primary-400' : ''}`}
           >
             <Filter className="w-3.5 h-3.5" /> Filters
           </button>
         </div>
 
         {showFilters && (
-          <div className="mb-4 p-4 bg-slate-50 dark:bg-slate-800/50 rounded-xl space-y-3 animate-fade-in border border-slate-200 dark:border-slate-700">
+          <div className="mb-5 p-5 bg-slate-50 dark:bg-slate-900/60 rounded-2xl space-y-3.5 animate-fade-in border border-slate-200/80 dark:border-slate-800 shadow-card">
             <div>
-              <p className="text-xs font-semibold text-slate-500 mb-2">Status</p>
+              <p className="text-xs font-bold uppercase tracking-wider text-slate-500 mb-2">Status</p>
               <div className="flex flex-wrap gap-1.5">
                 {STATUS_OPTIONS.map(f => (
                   <button key={f.value} onClick={() => setStatusFilter(f.value)} className={`filter-chip ${statusFilter === f.value ? 'active' : ''}`}>
@@ -239,7 +239,7 @@ export default function TasksPage() {
               </div>
             </div>
             <div>
-              <p className="text-xs font-semibold text-slate-500 mb-2">Priority</p>
+              <p className="text-xs font-bold uppercase tracking-wider text-slate-500 mb-2">Priority</p>
               <div className="flex flex-wrap gap-1.5">
                 <button onClick={() => setPriorityFilter('all')} className={`filter-chip ${priorityFilter === 'all' ? 'active' : ''}`}>All</button>
                 {PRIORITY_LIST.map(p => (
@@ -250,7 +250,7 @@ export default function TasksPage() {
               </div>
             </div>
             <div>
-              <p className="text-xs font-semibold text-slate-500 mb-2">Category</p>
+              <p className="text-xs font-bold uppercase tracking-wider text-slate-500 mb-2">Category</p>
               <div className="flex flex-wrap gap-1.5">
                 <button onClick={() => setCategoryFilter('all')} className={`filter-chip ${categoryFilter === 'all' ? 'active' : ''}`}>All</button>
                 {CATEGORY_LIST.map(c => (
@@ -268,7 +268,7 @@ export default function TasksPage() {
           <EmptyState
             icon="✅"
             title={search ? 'No tasks match your search' : 'No tasks yet'}
-            description={search ? 'Try different search terms.' : 'Create a task manually or paste a college notice to generate one.'}
+            description={search ? 'Try adjusting your filters or search terms.' : 'Create a task manually or paste a college notice to generate one.'}
             action={
               !search ? (
                 <Button variant="primary" onClick={() => setShowAdd(true)}>
@@ -279,7 +279,7 @@ export default function TasksPage() {
           />
         ) : viewMode === 'list' ? (
           /* List View */
-          <div className="space-y-2">
+          <div className="space-y-2.5">
             {filtered.map(task => (
               <TaskCard
                 key={task.id}
@@ -297,9 +297,9 @@ export default function TasksPage() {
             {/* Q1: Urgent & Important */}
             <MatrixQuadrant
               title="Do First (Urgent & Important)"
-              subtitle="Crisis, deadlines, urgent obligations"
+              subtitle="Critical deadlines, immediate exam/lab commitments"
               icon={Flame}
-              colorClass="border-red-300 dark:border-red-800 bg-red-50/20 dark:bg-red-950/10 text-red-600 dark:text-red-400"
+              colorClass="border-red-200/90 dark:border-red-900/50 bg-red-50/20 dark:bg-red-950/20 text-red-600 dark:text-red-400"
               tasks={filtered.filter(t => t.priority === 'urgent_important')}
               onToggle={toggleComplete}
               onView={setSelectedTask}
@@ -307,9 +307,9 @@ export default function TasksPage() {
             {/* Q2: Important, Not Urgent */}
             <MatrixQuadrant
               title="Schedule (Important, Not Urgent)"
-              subtitle="Long-term projects, study goals, preparation"
+              subtitle="Long-term study goals, skill development, hackathons"
               icon={Target}
-              colorClass="border-orange-300 dark:border-orange-800 bg-orange-50/20 dark:bg-orange-950/10 text-orange-600 dark:text-orange-400"
+              colorClass="border-amber-200/90 dark:border-amber-900/50 bg-amber-50/20 dark:bg-amber-950/20 text-amber-600 dark:text-amber-400"
               tasks={filtered.filter(t => t.priority === 'important_not_urgent')}
               onToggle={toggleComplete}
               onView={setSelectedTask}
@@ -317,9 +317,9 @@ export default function TasksPage() {
             {/* Q3: Urgent, Not Important */}
             <MatrixQuadrant
               title="Delegate / Quick (Urgent, Not Important)"
-              subtitle="Minor interruptions, routine coordination"
+              subtitle="Routine sign-ups, paperwork, minor errands"
               icon={Zap}
-              colorClass="border-yellow-300 dark:border-yellow-800 bg-yellow-50/20 dark:bg-yellow-950/10 text-yellow-600 dark:text-yellow-400"
+              colorClass="border-sky-200/90 dark:border-sky-900/50 bg-sky-50/20 dark:bg-sky-950/20 text-sky-600 dark:text-sky-400"
               tasks={filtered.filter(t => t.priority === 'urgent_not_important')}
               onToggle={toggleComplete}
               onView={setSelectedTask}
@@ -327,9 +327,9 @@ export default function TasksPage() {
             {/* Q4: Low Priority */}
             <MatrixQuadrant
               title="Eliminate / Backlog (Low Priority)"
-              subtitle="Low impact, nice-to-have later"
+              subtitle="Low impact, recreational ideas, nice-to-have later"
               icon={Archive}
-              colorClass="border-slate-300 dark:border-slate-700 bg-slate-50/50 dark:bg-slate-800/20 text-slate-600 dark:text-slate-400"
+              colorClass="border-slate-200/90 dark:border-slate-800 bg-slate-50/40 dark:bg-slate-900/30 text-slate-600 dark:text-slate-400"
               tasks={filtered.filter(t => t.priority === 'low')}
               onToggle={toggleComplete}
               onView={setSelectedTask}

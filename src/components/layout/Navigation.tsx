@@ -48,35 +48,35 @@ export function Sidebar() {
   return (
     <aside
       className={cn(
-        'hidden md:flex flex-col h-full transition-all duration-300 border-r border-white/5 bg-gradient-to-b from-[#0b0f19] via-[#090d16] to-[#06080e]',
-        collapsed ? 'w-18' : 'w-64'
+        'hidden md:flex flex-col h-full transition-all duration-300 border-r border-slate-200/80 dark:border-white/5 bg-white/95 dark:bg-gradient-to-b dark:from-[#0b0f19] dark:via-[#090d16] dark:to-[#05070c] backdrop-blur-xl z-20',
+        collapsed ? 'w-20' : 'w-64'
       )}
     >
       {/* Brand Header */}
-      <div className={cn('flex items-center gap-3 px-4 py-5 border-b border-white/5', collapsed && 'justify-center')}>
-        <div className="w-9 h-9 rounded-xl bg-gradient-to-tr from-primary-600 via-indigo-500 to-purple-500 shadow-glow-primary flex items-center justify-center shrink-0">
+      <div className={cn('flex items-center gap-3 px-4 py-5 border-b border-slate-100 dark:border-white/5', collapsed && 'justify-center px-2')}>
+        <div className="w-10 h-10 rounded-2xl bg-gradient-to-tr from-primary-600 via-indigo-500 to-purple-600 shadow-glow-primary flex items-center justify-center shrink-0">
           <GraduationCap className="w-5 h-5 text-white" />
         </div>
         {!collapsed && (
           <div className="overflow-hidden min-w-0">
             <div className="flex items-center gap-1.5">
-              <p className="text-white font-bold text-sm tracking-tight leading-tight">Command Center</p>
-              <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse shrink-0" />
+              <p className="text-slate-900 dark:text-white font-bold text-sm tracking-tight leading-tight">Command Center</p>
+              <span className="w-2 h-2 rounded-full bg-emerald-500 ring-2 ring-emerald-500/20 animate-pulse shrink-0" />
             </div>
-            <p className="text-primary-300/80 text-[10px] font-bold uppercase tracking-wider">Student OS</p>
+            <p className="text-primary-600 dark:text-primary-400 text-[10px] font-bold uppercase tracking-wider">Student OS</p>
           </div>
         )}
         <button
           onClick={() => setCollapsed(v => !v)}
-          className="ml-auto text-slate-500 hover:text-slate-300 transition-colors hidden lg:block p-1 rounded-lg hover:bg-white/5"
+          className="ml-auto text-slate-400 hover:text-slate-700 dark:text-slate-500 dark:hover:text-slate-200 transition-colors hidden lg:block p-1.5 rounded-xl hover:bg-slate-100 dark:hover:bg-white/5 cursor-pointer"
           aria-label={collapsed ? 'Expand sidebar' : 'Collapse sidebar'}
         >
-          <ChevronRight className={cn('w-4 h-4 transition-transform', !collapsed && 'rotate-180')} />
+          <ChevronRight className={cn('w-4 h-4 transition-transform duration-200', !collapsed && 'rotate-180')} />
         </button>
       </div>
 
       {/* Navigation list */}
-      <nav className="flex-1 px-3 py-4 space-y-1 overflow-y-auto no-scrollbar">
+      <nav className="flex-1 px-3 py-4 space-y-1.5 overflow-y-auto no-scrollbar">
         {NAV_ITEMS.map(item => (
           <NavLink
             key={item.to}
@@ -85,71 +85,88 @@ export function Sidebar() {
             id={item.id}
             className={({ isActive }) =>
               cn(
-                'sidebar-link relative group',
-                isActive && 'active',
+                'flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-xs font-semibold transition-all duration-200 relative group select-none cursor-pointer',
+                isActive
+                  ? 'bg-primary-500/10 text-primary-600 dark:bg-primary-500/15 dark:text-primary-300 font-bold shadow-2xs'
+                  : 'text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-white/5 hover:text-slate-900 dark:hover:text-white',
                 collapsed && 'justify-center px-2'
               )
             }
           >
-            <div className="relative shrink-0">
-              <item.icon className="w-4.5 h-4.5 group-hover:scale-110 transition-transform" />
-              {item.to === '/inbox' && unreadCount > 0 && (
-                <span className="absolute -top-1.5 -right-2 min-w-4 h-4 px-1 bg-red-500 text-white text-[10px] rounded-full flex items-center justify-center font-bold shadow-xs">
-                  {unreadCount > 9 ? '9+' : unreadCount}
-                </span>
-              )}
-              {item.to === '/tasks' && urgentCount > 0 && (
-                <span className="absolute -top-1.5 -right-2 min-w-4 h-4 px-1 bg-amber-500 text-white text-[10px] rounded-full flex items-center justify-center font-bold shadow-xs">
-                  {urgentCount > 9 ? '9+' : urgentCount}
-                </span>
-              )}
-            </div>
-            {!collapsed && <span className="truncate text-xs font-semibold">{item.label}</span>}
+            {({ isActive }) => (
+              <>
+                {isActive && (
+                  <span className="absolute left-0 top-1.5 bottom-1.5 w-1 rounded-r-full bg-primary-600 dark:bg-primary-400 shadow-glow-primary" />
+                )}
+                <div className="relative shrink-0">
+                  <item.icon className={cn('w-4.5 h-4.5 transition-transform duration-200 group-hover:scale-110', isActive ? 'text-primary-600 dark:text-primary-400' : 'text-slate-400 dark:text-slate-400 group-hover:text-slate-700 dark:group-hover:text-slate-200')} />
+                  {item.to === '/inbox' && unreadCount > 0 && (
+                    <span className="absolute -top-1.5 -right-2 min-w-4 h-4 px-1 bg-red-500 text-white text-[10px] rounded-full flex items-center justify-center font-bold shadow-xs">
+                      {unreadCount > 9 ? '9+' : unreadCount}
+                    </span>
+                  )}
+                  {item.to === '/tasks' && urgentCount > 0 && (
+                    <span className="absolute -top-1.5 -right-2 min-w-4 h-4 px-1 bg-amber-500 text-white text-[10px] rounded-full flex items-center justify-center font-bold shadow-xs">
+                      {urgentCount > 9 ? '9+' : urgentCount}
+                    </span>
+                  )}
+                </div>
+                {!collapsed && <span className="truncate">{item.label}</span>}
+              </>
+            )}
           </NavLink>
         ))}
       </nav>
 
       {/* Bottom User & Theme Dock */}
-      <div className={cn('p-3 space-y-2 border-t border-white/5 bg-black/20')}>
+      <div className={cn('p-3 space-y-2 border-t border-slate-100 dark:border-white/5 bg-slate-50/50 dark:bg-black/30')}>
         {/* Theme Toggle */}
         <button
           onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
-          className={cn('sidebar-link w-full text-xs hover:text-white', collapsed && 'justify-center')}
+          className={cn(
+            'flex items-center gap-3 px-3.5 py-2 rounded-xl text-xs font-semibold text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-white/5 hover:text-slate-900 dark:hover:text-white transition-all w-full cursor-pointer',
+            collapsed && 'justify-center px-2'
+          )}
           aria-label="Toggle theme"
         >
-          {theme === 'dark' ? <Sun className="w-4 h-4 text-amber-400 shrink-0" /> : <Moon className="w-4 h-4 text-indigo-400 shrink-0" />}
-          {!collapsed && <span>{theme === 'dark' ? 'Light Mode' : 'Dark Mode'}</span>}
+          {theme === 'dark' ? (
+            <Sun className="w-4 h-4 text-amber-400 shrink-0" />
+          ) : (
+            <Moon className="w-4 h-4 text-indigo-500 shrink-0" />
+          )}
+          {!collapsed && <span>{theme === 'dark' ? 'Light Theme' : 'Dark Theme'}</span>}
         </button>
 
         {/* Profile Card */}
         <NavLink
           to="/settings"
           className={cn(
-            'flex items-center gap-3 p-2 rounded-xl bg-white/5 hover:bg-white/10 transition-all border border-white/5 group',
-            collapsed && 'justify-center p-1.5'
+            'flex items-center gap-3 p-2.5 rounded-xl bg-white dark:bg-white/5 hover:bg-slate-100 dark:hover:bg-white/10 transition-all border border-slate-200/80 dark:border-white/5 shadow-2xs group cursor-pointer',
+            collapsed && 'justify-center p-2'
           )}
+          title="Account Settings"
         >
           <div className="relative shrink-0">
             {profile.avatar_url ? (
               <img
                 src={profile.avatar_url}
                 alt={profile.name}
-                className="w-8 h-8 rounded-lg object-cover ring-1 ring-white/20 group-hover:ring-primary-400 transition-all"
+                className="w-8 h-8 rounded-xl object-cover ring-1 ring-slate-200 dark:ring-white/20 group-hover:ring-primary-500 transition-all"
               />
             ) : (
-              <div className="w-8 h-8 rounded-lg bg-gradient-to-tr from-primary-600 to-indigo-500 flex items-center justify-center text-white font-bold text-xs shadow-xs">
+              <div className="w-8 h-8 rounded-xl bg-gradient-to-tr from-primary-600 via-indigo-600 to-purple-600 flex items-center justify-center text-white font-bold text-xs shadow-xs">
                 {profile.name.split(' ').map(n => n[0]).join('').slice(0, 2)}
               </div>
             )}
-            <span className="absolute -bottom-0.5 -right-0.5 w-2 h-2 rounded-full bg-emerald-500 ring-2 ring-[#0b0f19]" />
+            <span className="absolute -bottom-0.5 -right-0.5 w-2.5 h-2.5 rounded-full bg-emerald-500 ring-2 ring-white dark:ring-[#0b0f19]" />
           </div>
           {!collapsed && (
             <div className="overflow-hidden min-w-0 flex-1">
-              <p className="text-white text-xs font-bold truncate group-hover:text-primary-300 transition-colors">
+              <p className="text-slate-900 dark:text-white text-xs font-bold truncate group-hover:text-primary-600 dark:group-hover:text-primary-300 transition-colors">
                 {profile.name}
               </p>
-              <p className="text-slate-400 text-[10px] truncate">
-                {profile.email || 'Online'}
+              <p className="text-slate-500 dark:text-slate-400 text-[10px] truncate">
+                Pro Student OS
               </p>
             </div>
           )}
@@ -169,7 +186,7 @@ export function MobileNav() {
   return (
     <>
       {/* Bottom bar */}
-      <nav className="md:hidden fixed bottom-0 left-0 right-0 z-40 bg-white/85 dark:bg-slate-950/85 backdrop-blur-xl border-t border-slate-200/80 dark:border-slate-800/80 safe-area-bottom">
+      <nav className="md:hidden fixed bottom-0 left-0 right-0 z-40 bg-white/90 dark:bg-slate-950/90 backdrop-blur-xl border-t border-slate-200/80 dark:border-slate-800/80 safe-area-bottom shadow-lg">
         <div className="flex items-center justify-around py-1">
           {MOBILE_MAIN.map(item => (
             <NavLink
@@ -179,9 +196,9 @@ export function MobileNav() {
               id={`mobile-${item.id}`}
               className={({ isActive }) =>
                 cn(
-                  'flex-1 flex flex-col items-center gap-1 py-2 px-1 text-xs font-medium transition-colors select-none',
+                  'flex-1 flex flex-col items-center gap-1 py-2 px-1 text-xs font-medium transition-all select-none',
                   isActive
-                    ? 'text-primary-600 dark:text-primary-400 font-bold'
+                    ? 'text-primary-600 dark:text-primary-400 font-bold scale-105'
                     : 'text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200'
                 )
               }
@@ -262,27 +279,36 @@ export function TopBar({
   const PageIcon = currentNav?.icon ?? LayoutDashboard
 
   return (
-    <header className="sticky top-0 z-30 bg-white/75 dark:bg-slate-950/75 backdrop-blur-xl border-b border-slate-200/80 dark:border-slate-800/80 flex items-center justify-between px-4 lg:px-6 py-2.5 transition-all">
+    <header className="sticky top-0 z-30 bg-white/80 dark:bg-[#070a12]/80 backdrop-blur-xl border-b border-slate-200/80 dark:border-white/5 flex items-center justify-between px-4 lg:px-7 py-3 transition-all">
       {/* Left: Active view indicator */}
       <div className="flex items-center gap-3 min-w-0">
-        <div className="w-8 h-8 rounded-xl bg-gradient-to-br from-primary-50 to-indigo-50 dark:from-primary-950/60 dark:to-indigo-950/60 border border-primary-200/60 dark:border-primary-800/60 flex items-center justify-center text-primary-600 dark:text-primary-400 shrink-0 shadow-2xs">
-          <PageIcon className="w-4 h-4" />
+        <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-primary-50 to-indigo-50 dark:from-primary-950/60 dark:to-indigo-950/60 border border-primary-200/70 dark:border-primary-800/60 flex items-center justify-center text-primary-600 dark:text-primary-400 shrink-0 shadow-2xs">
+          <PageIcon className="w-4.5 h-4.5" />
         </div>
         <div>
-          <h2 className="font-bold text-slate-900 dark:text-slate-100 text-sm leading-tight tracking-tight truncate">{pageTitle}</h2>
-          <p className="text-[10px] text-slate-400 font-semibold uppercase tracking-wider hidden sm:block">College Command Center</p>
+          <div className="flex items-center gap-2">
+            <h2 className="font-extrabold text-slate-900 dark:text-slate-100 text-sm sm:text-base leading-tight tracking-tight truncate">
+              {pageTitle}
+            </h2>
+            <span className="hidden xl:inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-semibold bg-slate-100 dark:bg-white/5 text-slate-500 dark:text-slate-400 border border-slate-200/80 dark:border-white/5">
+              Live
+            </span>
+          </div>
+          <p className="text-[10px] text-slate-400 font-semibold uppercase tracking-wider hidden sm:block">
+            College Command Center
+          </p>
         </div>
       </div>
 
-      {/* Center: Command Palette Trigger */}
+      {/* Center: Command Palette Trigger (Linear/Raycast style) */}
       <button
         onClick={onOpenPalette}
-        className="flex items-center gap-2.5 px-3 py-1.5 rounded-xl border border-slate-200/90 dark:border-slate-800 bg-white/70 dark:bg-slate-900/70 hover:bg-white dark:hover:bg-slate-900 text-slate-400 hover:border-primary-300 dark:hover:border-primary-700 hover:text-slate-700 dark:hover:text-slate-200 transition-all text-xs w-44 sm:w-64 md:w-72 lg:w-80 shadow-2xs group cursor-pointer"
+        className="flex items-center gap-2.5 px-3.5 py-1.5 rounded-xl border border-slate-200 dark:border-slate-800/90 bg-white/70 dark:bg-slate-900/60 hover:bg-white dark:hover:bg-slate-900 hover:border-primary-300 dark:hover:border-primary-700/80 text-slate-400 hover:text-slate-700 dark:hover:text-slate-200 transition-all text-xs w-44 sm:w-64 md:w-72 lg:w-84 shadow-2xs group cursor-pointer select-none"
         title="Quick Search & Command Palette (Ctrl+K or Cmd+K)"
       >
         <Search className="w-3.5 h-3.5 text-slate-400 group-hover:text-primary-500 transition-colors shrink-0" />
-        <span className="flex-1 text-left truncate font-medium">Search or jump to...</span>
-        <span className="hidden sm:inline-flex items-center gap-1 text-[10px] font-mono px-1.5 py-0.5 rounded bg-slate-100 dark:bg-slate-800 text-slate-500 dark:text-slate-400 border border-slate-200 dark:border-slate-700">
+        <span className="flex-1 text-left truncate font-medium">Search or type command...</span>
+        <span className="hidden sm:inline-flex items-center gap-1 text-[10px] font-mono px-1.5 py-0.5 rounded-md bg-slate-100 dark:bg-slate-800 text-slate-500 dark:text-slate-400 border border-slate-200 dark:border-slate-700/80 shadow-2xs">
           ⌘K
         </span>
       </button>
@@ -292,7 +318,7 @@ export function TopBar({
         {onOpenAddTask && (
           <button
             onClick={onOpenAddTask}
-            className="hidden sm:inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-semibold bg-gradient-to-r from-primary-600 to-indigo-600 hover:from-primary-500 hover:to-indigo-500 text-white shadow-sm hover:shadow-glow-primary active:scale-[0.98] transition-all cursor-pointer"
+            className="hidden sm:inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl text-xs font-semibold bg-gradient-to-r from-primary-600 via-primary-500 to-indigo-600 hover:from-primary-500 hover:to-indigo-500 text-white shadow-sm hover:shadow-glow-primary active:scale-[0.98] transition-all cursor-pointer"
             title="Create Task"
           >
             <Plus className="w-3.5 h-3.5" />
@@ -303,7 +329,7 @@ export function TopBar({
         {onOpenAddInbox && (
           <button
             onClick={onOpenAddInbox}
-            className="hidden md:inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-semibold bg-slate-100 hover:bg-slate-200/80 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 border border-slate-200/80 dark:border-slate-700/80 active:scale-[0.98] transition-all cursor-pointer"
+            className="hidden md:inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-semibold bg-slate-100 hover:bg-slate-200/80 dark:bg-slate-900 dark:hover:bg-slate-800 text-slate-700 dark:text-slate-200 border border-slate-200/80 dark:border-slate-800 active:scale-[0.98] transition-all cursor-pointer"
             title="Capture Notice"
           >
             <Sparkles className="w-3.5 h-3.5 text-primary-500" />
@@ -313,22 +339,26 @@ export function TopBar({
 
         <button
           onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
-          className="p-2 rounded-xl text-slate-500 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors cursor-pointer"
+          className="p-2 rounded-xl text-slate-500 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800/80 hover:text-slate-900 dark:hover:text-white transition-all cursor-pointer"
           aria-label="Toggle theme"
-          title={theme === 'dark' ? 'Switch to Light Mode' : 'Switch to Dark Mode'}
+          title={theme === 'dark' ? 'Switch to Light Theme' : 'Switch to Dark Theme'}
         >
-          {theme === 'dark' ? <Sun className="w-4 h-4 text-amber-400" /> : <Moon className="w-4 h-4 text-slate-600" />}
+          {theme === 'dark' ? (
+            <Sun className="w-4 h-4 text-amber-400 transition-transform duration-300 hover:rotate-45" />
+          ) : (
+            <Moon className="w-4 h-4 text-slate-600 transition-transform duration-300 hover:-rotate-12" />
+          )}
         </button>
 
-        <NavLink to="/settings" className="shrink-0 ml-1" title="Account Settings">
+        <NavLink to="/settings" className="shrink-0 ml-1 group" title="Account Settings">
           {profile.avatar_url ? (
             <img
               src={profile.avatar_url}
               alt={profile.name}
-              className="w-8 h-8 rounded-xl object-cover ring-2 ring-primary-500/30 hover:ring-primary-500 transition-all shadow-2xs"
+              className="w-8 h-8 rounded-xl object-cover ring-2 ring-primary-500/20 group-hover:ring-primary-500 transition-all shadow-2xs"
             />
           ) : (
-            <div className="w-8 h-8 rounded-xl bg-gradient-to-tr from-primary-600 to-indigo-600 text-white font-bold text-xs flex items-center justify-center shadow-xs">
+            <div className="w-8 h-8 rounded-xl bg-gradient-to-tr from-primary-600 via-indigo-600 to-purple-600 text-white font-bold text-xs flex items-center justify-center shadow-xs group-hover:shadow-glow-primary transition-all">
               {profile.name.charAt(0)}
             </div>
           )}
@@ -350,15 +380,23 @@ export function PageLayout({ children, title, subtitle, action }: {
   return (
     <div className="flex flex-col h-full animate-fade-in">
       {(title || action) && (
-        <div className="flex items-center justify-between px-6 pt-6 pb-2 shrink-0">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 px-6 lg:px-8 pt-6 pb-3 shrink-0">
           <div>
-            {title && <h1 className="text-2xl font-extrabold text-slate-900 dark:text-slate-100 tracking-tight">{title}</h1>}
-            {subtitle && <p className="text-xs text-slate-500 dark:text-slate-400 font-medium mt-0.5">{subtitle}</p>}
+            {title && (
+              <h1 className="text-2xl sm:text-3xl font-extrabold text-slate-900 dark:text-slate-100 tracking-tight">
+                {title}
+              </h1>
+            )}
+            {subtitle && (
+              <p className="text-xs sm:text-sm text-slate-500 dark:text-slate-400 font-medium mt-1">
+                {subtitle}
+              </p>
+            )}
           </div>
-          {action && <div>{action}</div>}
+          {action && <div className="shrink-0">{action}</div>}
         </div>
       )}
-      <div className="flex-1 overflow-y-auto px-6 py-4 pb-24 md:pb-6">
+      <div className="flex-1 overflow-y-auto px-6 lg:px-8 py-4 pb-24 md:pb-8">
         {children}
       </div>
     </div>

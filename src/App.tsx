@@ -40,12 +40,17 @@ function AppLayout() {
   }, [])
 
   return (
-    <div className="flex h-screen bg-[#f8fafc] dark:bg-[#06090f] text-slate-900 dark:text-slate-100 overflow-hidden select-none">
+    <div className="flex h-screen bg-[#f8fafc] dark:bg-[#06090f] text-slate-900 dark:text-slate-100 overflow-hidden select-none relative">
+      {/* Ambient Studio Aurora Glows */}
+      <div className="pointer-events-none fixed -top-32 left-1/4 w-[600px] h-[450px] bg-gradient-to-br from-primary-500/10 to-indigo-600/10 dark:from-primary-600/15 dark:to-indigo-600/15 rounded-full blur-[130px] -z-10" />
+      <div className="pointer-events-none fixed top-1/3 -right-24 w-[500px] h-[450px] bg-gradient-to-br from-purple-500/10 to-pink-500/5 dark:from-purple-600/12 dark:to-pink-600/8 rounded-full blur-[140px] -z-10" />
+      <div className="pointer-events-none fixed -bottom-24 left-1/3 w-[600px] h-[400px] bg-gradient-to-tr from-sky-500/10 to-teal-500/5 dark:from-sky-600/12 dark:to-teal-600/8 rounded-full blur-[140px] -z-10" />
+
       {/* Desktop Sidebar */}
       <Sidebar />
 
       {/* Main content */}
-      <div className="flex-1 flex flex-col min-w-0 overflow-hidden">
+      <div className="flex-1 flex flex-col min-w-0 overflow-hidden relative">
         {/* Header */}
         <TopBar
           onOpenPalette={() => setPaletteOpen(true)}

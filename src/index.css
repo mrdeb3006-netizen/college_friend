@@ -240,16 +240,16 @@ body {
 
   /* Eisenhower Matrix Quadrant Cards */
   .matrix-q1 {
-    @apply bg-red-500/[0.03] dark:bg-red-950/20 border-red-200/80 dark:border-red-900/40 rounded-2xl border transition-all;
+    @apply bg-red-500/[0.04] dark:bg-red-950/25 border-red-200/80 dark:border-red-900/50 rounded-2xl border transition-all duration-200 hover:border-red-400/80 dark:hover:border-red-700/80 hover:shadow-glow-red;
   }
   .matrix-q2 {
-    @apply bg-amber-500/[0.03] dark:bg-amber-950/20 border-amber-200/80 dark:border-amber-900/40 rounded-2xl border transition-all;
+    @apply bg-amber-500/[0.04] dark:bg-amber-950/25 border-amber-200/80 dark:border-amber-900/50 rounded-2xl border transition-all duration-200 hover:border-amber-400/80 dark:hover:border-amber-700/80 hover:shadow-glow-amber;
   }
   .matrix-q3 {
-    @apply bg-sky-500/[0.03] dark:bg-sky-950/20 border-sky-200/80 dark:border-sky-900/40 rounded-2xl border transition-all;
+    @apply bg-sky-500/[0.04] dark:bg-sky-950/25 border-sky-200/80 dark:border-sky-900/50 rounded-2xl border transition-all duration-200 hover:border-sky-400/80 dark:hover:border-sky-700/80 hover:shadow-glow-sky;
   }
   .matrix-q4 {
-    @apply bg-slate-500/[0.03] dark:bg-slate-900/40 border-slate-200/80 dark:border-slate-800/60 rounded-2xl border transition-all;
+    @apply bg-slate-500/[0.04] dark:bg-slate-900/40 border-slate-200/80 dark:border-slate-800/60 rounded-2xl border transition-all duration-200 hover:border-slate-400/80 dark:hover:border-slate-700/80;
   }
 
   /* Chat bubble */
@@ -270,6 +270,40 @@ body {
   .priority-dot-important { @apply inline-block w-2.5 h-2.5 rounded-full bg-amber-500 ring-4 ring-amber-500/25; }
   .priority-dot-notable   { @apply inline-block w-2.5 h-2.5 rounded-full bg-sky-500 ring-4 ring-sky-500/25; }
   .priority-dot-low       { @apply inline-block w-2.5 h-2.5 rounded-full bg-slate-400 ring-4 ring-slate-400/25; }
+
+  /* Shimmer gradient line */
+  .shimmer-bar {
+    background: linear-gradient(
+      90deg,
+      rgba(255, 255, 255, 0) 0%,
+      rgba(255, 255, 255, 0.4) 50%,
+      rgba(255, 255, 255, 0) 100%
+    );
+    background-size: 200% 100%;
+    animation: shimmer 2.2s infinite;
+  }
+
+  /* Glass card with gradient stroke */
+  .glass-card-interactive {
+    @apply bg-white/80 dark:bg-slate-900/70 backdrop-blur-xl border border-slate-200/80 dark:border-white/[0.08] shadow-card hover:shadow-card-lg hover:border-primary-400/50 dark:hover:border-primary-500/40 transition-all duration-300;
+  }
+
+  /* Gradient border highlight */
+  .border-gradient {
+    position: relative;
+  }
+  .border-gradient::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    padding: 1px;
+    background: linear-gradient(135deg, rgba(99, 102, 241, 0.4), rgba(168, 85, 247, 0.2), transparent);
+    -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+    pointer-events: none;
+  }
 
   /* Hide scrollbar */
   .no-scrollbar::-webkit-scrollbar { display: none; }

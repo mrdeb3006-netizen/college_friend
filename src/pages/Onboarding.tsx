@@ -1,20 +1,20 @@
 import React, { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { GraduationCap, ArrowRight, Sparkles } from 'lucide-react'
+import { GraduationCap, ArrowRight, Sparkles, Check, Compass, ShieldCheck } from 'lucide-react'
 import { Button, Input, Textarea } from '../components/ui'
 import { demoStore } from '../lib/demoStore'
 
 const STEPS = [
-  { id: 'name',      title: "Welcome! What's your name?",         subtitle: "Let's personalize your command center." },
-  { id: 'interests', title: 'What are you passionate about?',      subtitle: 'Select your focus areas — helps the AI Copilot give tailored advice.' },
-  { id: 'workflow',  title: 'Your Command Center is ready.',       subtitle: "Here's how your personal operating system works." },
+  { id: 'name',      title: "Welcome! What's your name?",         subtitle: "Let's personalize your college operating system." },
+  { id: 'interests', title: 'What are your key focus areas?',      subtitle: 'Select your academic interests — helps the AI Copilot tailor suggestions.' },
+  { id: 'workflow',  title: 'Your Command Center is ready.',       subtitle: "Here's how your unified student operating system operates." },
 ]
 
 const INTEREST_OPTIONS = [
-  'Machine Learning / AI', 'Web Development', 'Mobile Development', 'Data Science',
-  'Competitive Programming', 'Open Source', 'Entrepreneurship', 'Design / UI/UX',
-  'Research', 'Cloud Computing', 'Cybersecurity', 'Game Development',
-  'Robotics / IoT', 'Finance / Fintech', 'Healthcare Tech', 'EdTech',
+  'Machine Learning / AI', 'Full-Stack Web Dev', 'Mobile App Dev', 'Data Science',
+  'Competitive Programming', 'Open Source', 'Entrepreneurship & Startups', 'UI/UX & Product Design',
+  'Academic Research', 'Cloud & DevOps', 'Cybersecurity', 'Game Development',
+  'Robotics & IoT', 'Finance & Fintech', 'Systems & Architecture', 'Quantum Computing',
 ]
 
 export default function Onboarding() {
@@ -22,7 +22,7 @@ export default function Onboarding() {
   const [step, setStep] = useState(0)
   const [data, setData] = useState({
     name: 'Debendranath Bera',
-    interests: ['Full-Stack Development', 'AI & Machine Learning', 'Competitive Programming', 'Open Source'] as string[],
+    interests: ['Full-Stack Web Dev', 'Machine Learning / AI', 'Competitive Programming', 'Open Source'] as string[],
     goals: '',
   })
 
@@ -61,39 +61,48 @@ export default function Onboarding() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-950 via-primary-950 to-slate-950 flex items-center justify-center p-4">
-      <div className="w-full max-w-md">
-        {/* Logo */}
-        <div className="flex items-center gap-3 mb-8 justify-center">
-          <div className="w-10 h-10 rounded-xl bg-primary-500 flex items-center justify-center shadow-lg shadow-primary-500/20">
+    <div className="min-h-screen bg-[#06090f] text-slate-100 flex items-center justify-center p-4 sm:p-6 relative overflow-hidden select-none">
+      {/* Aurora Ambient Glows */}
+      <div className="pointer-events-none fixed -top-40 left-1/4 w-[600px] h-[500px] bg-gradient-to-br from-primary-600/20 via-indigo-600/20 to-transparent rounded-full blur-[140px] -z-10" />
+      <div className="pointer-events-none fixed bottom-0 right-1/4 w-[500px] h-[450px] bg-gradient-to-tr from-purple-600/15 via-pink-600/10 to-transparent rounded-full blur-[140px] -z-10" />
+
+      <div className="w-full max-w-lg relative z-10">
+        {/* Logo & Brand */}
+        <div className="flex items-center gap-3.5 mb-8 justify-center">
+          <div className="w-12 h-12 rounded-2xl bg-gradient-to-tr from-primary-600 via-indigo-600 to-purple-600 flex items-center justify-center shadow-lg shadow-primary-500/30 ring-1 ring-white/20">
             <GraduationCap className="w-6 h-6 text-white" />
           </div>
           <div>
-            <p className="text-white font-bold">College Command Center</p>
-            <p className="text-primary-400 text-xs">Your personal academic OS</p>
+            <p className="text-white font-extrabold text-lg tracking-tight">College Command Center</p>
+            <p className="text-primary-400 text-xs font-semibold flex items-center gap-1.5">
+              <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
+              Unified Academic Operating System
+            </p>
           </div>
         </div>
 
-        {/* Progress */}
-        <div className="flex gap-1.5 mb-6">
+        {/* Step Progress Pills */}
+        <div className="flex gap-2 mb-6">
           {STEPS.map((_, i) => (
             <div
               key={i}
-              className={`h-1 flex-1 rounded-full transition-all duration-300 ${
-                i <= step ? 'bg-primary-400' : 'bg-white/10'
+              className={`h-1.5 flex-1 rounded-full transition-all duration-500 ${
+                i <= step
+                  ? 'bg-gradient-to-r from-primary-500 to-indigo-500 shadow-glow-primary'
+                  : 'bg-white/10'
               }`}
             />
           ))}
         </div>
 
-        {/* Card */}
-        <div className="bg-white dark:bg-slate-800 rounded-2xl shadow-2xl p-8">
+        {/* Frosted Glass Card Container */}
+        <div className="bg-slate-900/80 backdrop-blur-2xl rounded-3xl border border-white/10 shadow-2xl p-6 sm:p-8">
           <div className="mb-6">
-            <h1 className="text-xl font-bold text-slate-900 dark:text-slate-100">{current.title}</h1>
-            <p className="text-sm text-slate-500 mt-1">{current.subtitle}</p>
+            <h1 className="text-2xl font-extrabold text-white tracking-tight">{current.title}</h1>
+            <p className="text-xs sm:text-sm text-slate-400 mt-1 font-medium">{current.subtitle}</p>
           </div>
 
-          {/* Step content */}
+          {/* Step 0: Name & Goals */}
           {step === 0 && (
             <div className="space-y-4">
               <Input
@@ -105,8 +114,8 @@ export default function Onboarding() {
                 id="onboarding-name"
               />
               <Textarea
-                label="Main Focus / Goals (optional)"
-                placeholder="e.g. Master software engineering, prepare for placements, balance coursework..."
+                label="Academic Goals & Focus (optional)"
+                placeholder="e.g. Ace algorithms, build production full-stack apps, prepare for placement season..."
                 value={data.goals}
                 onChange={e => update('goals', e.target.value)}
                 rows={3}
@@ -115,101 +124,111 @@ export default function Onboarding() {
             </div>
           )}
 
+          {/* Step 1: Interests */}
           {step === 1 && (
             <div>
-              <div className="flex flex-wrap gap-2">
-                {INTEREST_OPTIONS.map(interest => (
-                  <button
-                    key={interest}
-                    onClick={() => toggleInterest(interest)}
-                    className={`px-3 py-1.5 rounded-full text-xs font-medium border transition-all ${
-                      data.interests.includes(interest)
-                        ? 'bg-primary-500 border-primary-500 text-white shadow-sm'
-                        : 'border-slate-200 dark:border-slate-600 text-slate-600 dark:text-slate-400 hover:border-primary-300'
-                    }`}
-                  >
-                    {interest}
-                  </button>
-                ))}
+              <div className="flex flex-wrap gap-2 max-h-72 overflow-y-auto pr-1">
+                {INTEREST_OPTIONS.map(interest => {
+                  const selected = data.interests.includes(interest)
+                  return (
+                    <button
+                      key={interest}
+                      onClick={() => toggleInterest(interest)}
+                      className={`px-3 py-1.5 rounded-xl text-xs font-semibold border transition-all flex items-center gap-1.5 cursor-pointer ${
+                        selected
+                          ? 'bg-primary-600 border-primary-500 text-white shadow-glow-primary scale-105'
+                          : 'border-slate-800 bg-slate-800/60 text-slate-300 hover:border-slate-700 hover:bg-slate-800'
+                      }`}
+                    >
+                      {selected && <Check className="w-3.5 h-3.5" />}
+                      {interest}
+                    </button>
+                  )
+                })}
               </div>
-              <p className="text-xs text-slate-400 mt-3">{data.interests.length} selected</p>
+              <p className="text-xs text-slate-400 mt-4 font-mono font-medium">
+                {data.interests.length} topics selected
+              </p>
             </div>
           )}
 
+          {/* Step 2: System Architecture & Workflow */}
           {step === 2 && (
-            <div className="space-y-4">
+            <div className="space-y-3.5">
               {[
                 {
-                  step: '1. Capture',
+                  step: '1. Intelligent Ingest',
                   icon: '📥',
-                  desc: 'Add notices, PDFs, WhatsApp messages, or web links to your Inbox.',
+                  desc: 'Paste WhatsApp messages, exam circulars, or hackathon PDFs. Gemini AI extracts deadlines and links automatically.',
                 },
                 {
-                  step: '2. Understand',
-                  icon: '🤖',
-                  desc: 'AI automatically extracts deadlines, eligibility, and required actions.',
-                },
-                {
-                  step: '3. Prioritize',
+                  step: '2. Eisenhower Prioritization',
                   icon: '⚡',
-                  desc: 'Eisenhower priority matrix helps you focus on what actually moves the needle.',
+                  desc: 'Auto-categorize commitments into Q1 (Urgent/Important), Q2 (Schedule), Q3 (Delegate), and Q4 (Backlog).',
                 },
                 {
-                  step: '4. Act & Track',
-                  icon: '✅',
-                  desc: 'Turn notices into actionable tasks. AI Copilot guides your daily decisions.',
+                  step: '3. Real-Time Tracking',
+                  icon: '📅',
+                  desc: 'Interactive calendar, timeline view, and kanban board to guarantee you never miss a deadline.',
+                },
+                {
+                  step: '4. Academic AI Copilot',
+                  icon: '🤖',
+                  desc: 'Ask your copilot to build revision schedules, prioritize homework, or draft club announcements.',
                 },
               ].map(item => (
-                <div key={item.step} className="flex gap-3">
-                  <span className="text-2xl">{item.icon}</span>
+                <div key={item.step} className="flex items-start gap-3.5 p-3 rounded-2xl bg-white/[0.03] border border-white/5">
+                  <span className="text-2xl shrink-0 mt-0.5">{item.icon}</span>
                   <div>
-                    <p className="text-sm font-semibold text-slate-900 dark:text-slate-100">{item.step}</p>
-                    <p className="text-xs text-slate-500">{item.desc}</p>
+                    <p className="text-xs font-extrabold text-white">{item.step}</p>
+                    <p className="text-[11px] text-slate-400 mt-0.5 leading-relaxed">{item.desc}</p>
                   </div>
                 </div>
               ))}
 
-              <div className="bg-primary-50 dark:bg-primary-900/20 rounded-xl p-4 flex items-start gap-3 mt-2">
-                <Sparkles className="w-5 h-5 text-primary-500 shrink-0 mt-0.5" />
-                <p className="text-sm text-primary-700 dark:text-primary-300">
-                  Everything is kept fast and private on your device. You are ready to take control of your schedule!
+              <div className="bg-primary-950/50 border border-primary-800/60 rounded-2xl p-3.5 flex items-center gap-3">
+                <ShieldCheck className="w-5 h-5 text-emerald-400 shrink-0" />
+                <p className="text-xs text-primary-200 font-medium">
+                  Client-side local storage with private browser database. Zero external data sharing.
                 </p>
               </div>
             </div>
           )}
 
-          {/* Actions */}
-          <div className="flex items-center justify-between mt-8">
+          {/* Footer Controls */}
+          <div className="flex items-center justify-between mt-8 pt-4 border-t border-white/10">
             {step > 0 ? (
               <button
                 onClick={() => setStep(s => s - 1)}
-                className="text-sm text-slate-400 hover:text-slate-600 dark:hover:text-slate-300 transition-colors"
+                className="text-xs font-bold text-slate-400 hover:text-white transition-colors cursor-pointer"
               >
                 ← Back
               </button>
             ) : <div />}
+
             <Button
               variant="primary"
               onClick={handleNext}
               disabled={!canProceed()}
               id={`onboarding-next-${step}`}
+              className="shadow-glow-primary px-6"
             >
-              {isLast ? 'Get Started' : 'Continue'}
+              {isLast ? 'Enter Command Center' : 'Continue'}
               <ArrowRight className="w-4 h-4" />
             </Button>
           </div>
         </div>
 
-        {/* Skip */}
+        {/* Skip Option */}
         {!isLast && (
           <button
             onClick={() => {
               demoStore.completeOnboarding({ ...demoStore.getProfile(), name: data.name || 'Debendranath Bera' })
               navigate('/')
             }}
-            className="w-full text-center text-xs text-white/40 hover:text-white/60 mt-4 transition-colors"
+            className="w-full text-center text-xs font-semibold text-slate-500 hover:text-slate-300 mt-4 transition-colors cursor-pointer"
           >
-            Skip setup
+            Skip personalization & enter now →
           </button>
         )}
       </div>

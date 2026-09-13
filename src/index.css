@@ -14,24 +14,24 @@
   --text-primary:   #090d16;
   --text-secondary: #334155;
   --text-muted:     #64748b;
-  --sidebar-bg:     #0b0f19;
+  --sidebar-bg:     #070a13;
   --sidebar-text:   #94a3b8;
   --sidebar-active: #6366f1;
-  --sidebar-hover:  rgba(255, 255, 255, 0.05);
+  --sidebar-hover:  rgba(255, 255, 255, 0.08);
 }
 
 .dark {
   --surface:        #0d111a;
-  --surface-2:      #070b12;
+  --surface-2:      #06090f;
   --surface-3:      #131a29;
   --border:         rgba(255, 255, 255, 0.08);
   --text-primary:   #f8fafc;
   --text-secondary: #cbd5e1;
   --text-muted:     #94a3b8;
-  --sidebar-bg:     #070a12;
+  --sidebar-bg:     #070a13;
   --sidebar-text:   #94a3b8;
   --sidebar-active: #6366f1;
-  --sidebar-hover:  rgba(255, 255, 255, 0.06);
+  --sidebar-hover:  rgba(255, 255, 255, 0.08);
 }
 
 /* ============================================================
@@ -47,6 +47,13 @@ html {
   font-size: 16px;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  scroll-behavior: smooth;
+}
+
+/* Smooth Interactive Physics */
+button, a, input, textarea, select, .card, .card-hover, .glass-card-interactive, .sidebar-link, .filter-chip {
+  transition-timing-function: cubic-bezier(0.16, 1, 0.3, 1);
+  transition-duration: 250ms;
 }
 
 body {
@@ -55,6 +62,7 @@ body {
   color: var(--text-primary);
   min-height: 100vh;
   position: relative;
+  scroll-behavior: smooth;
   background-image:
     radial-gradient(ellipse 70% 45% at 50% -10%, rgba(99, 102, 241, 0.08), transparent 70%);
 }

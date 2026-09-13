@@ -48,35 +48,35 @@ export function Sidebar() {
   return (
     <aside
       className={cn(
-        'hidden md:flex flex-col h-full transition-all duration-300 border-r border-slate-200/80 dark:border-white/5 bg-white/95 dark:bg-gradient-to-b dark:from-[#0b0f19] dark:via-[#090d16] dark:to-[#05070c] backdrop-blur-xl z-20',
+        'hidden md:flex flex-col h-full transition-all duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] border-r border-white/[0.08] bg-[#070a13] text-slate-300 backdrop-blur-2xl z-20 select-none shadow-2xl shrink-0',
         collapsed ? 'w-20' : 'w-64'
       )}
     >
       {/* Brand Header */}
-      <div className={cn('flex items-center gap-3 px-4 py-5 border-b border-slate-100 dark:border-white/5', collapsed && 'justify-center px-2')}>
+      <div className={cn('flex items-center gap-3 px-4 py-5 border-b border-white/[0.06] bg-[#070a13]', collapsed && 'justify-center px-2')}>
         <div className="w-10 h-10 rounded-2xl bg-gradient-to-tr from-primary-600 via-indigo-500 to-purple-600 shadow-glow-primary flex items-center justify-center shrink-0">
           <GraduationCap className="w-5 h-5 text-white" />
         </div>
         {!collapsed && (
           <div className="overflow-hidden min-w-0">
             <div className="flex items-center gap-1.5">
-              <p className="text-slate-900 dark:text-white font-bold text-sm tracking-tight leading-tight">Command Center</p>
+              <p className="text-white font-extrabold text-sm tracking-tight leading-tight">Command Center</p>
               <span className="w-2 h-2 rounded-full bg-emerald-500 ring-2 ring-emerald-500/20 animate-pulse shrink-0" />
             </div>
-            <p className="text-primary-600 dark:text-primary-400 text-[10px] font-bold uppercase tracking-wider">Student OS</p>
+            <p className="text-primary-400 text-[10px] font-bold uppercase tracking-wider">Student OS</p>
           </div>
         )}
         <button
           onClick={() => setCollapsed(v => !v)}
-          className="ml-auto text-slate-400 hover:text-slate-700 dark:text-slate-500 dark:hover:text-slate-200 transition-colors hidden lg:block p-1.5 rounded-xl hover:bg-slate-100 dark:hover:bg-white/5 cursor-pointer"
+          className="ml-auto text-slate-400 hover:text-white transition-colors duration-200 hidden lg:block p-1.5 rounded-xl hover:bg-white/[0.08] cursor-pointer"
           aria-label={collapsed ? 'Expand sidebar' : 'Collapse sidebar'}
         >
-          <ChevronRight className={cn('w-4 h-4 transition-transform duration-200', !collapsed && 'rotate-180')} />
+          <ChevronRight className={cn('w-4 h-4 transition-transform duration-300 ease-out', !collapsed && 'rotate-180')} />
         </button>
       </div>
 
       {/* Navigation list */}
-      <nav className="flex-1 px-3 py-4 space-y-1.5 overflow-y-auto no-scrollbar">
+      <nav className="flex-1 px-3 py-4 space-y-1.5 overflow-y-auto no-scrollbar bg-[#070a13]">
         {NAV_ITEMS.map(item => (
           <NavLink
             key={item.to}
@@ -85,10 +85,10 @@ export function Sidebar() {
             id={item.id}
             className={({ isActive }) =>
               cn(
-                'flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-xs font-semibold transition-all duration-200 relative group select-none cursor-pointer',
+                'flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-xs font-semibold transition-all duration-200 ease-out relative group select-none cursor-pointer',
                 isActive
-                  ? 'bg-primary-500/10 text-primary-600 dark:bg-primary-500/15 dark:text-primary-300 font-bold shadow-2xs'
-                  : 'text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-white/5 hover:text-slate-900 dark:hover:text-white',
+                  ? 'bg-primary-500/20 text-white font-bold shadow-glow-primary/20 ring-1 ring-primary-500/30'
+                  : 'text-slate-400 hover:bg-white/[0.07] hover:text-white',
                 collapsed && 'justify-center px-2'
               )
             }
@@ -96,10 +96,10 @@ export function Sidebar() {
             {({ isActive }) => (
               <>
                 {isActive && (
-                  <span className="absolute left-0 top-1.5 bottom-1.5 w-1 rounded-r-full bg-primary-600 dark:bg-primary-400 shadow-glow-primary" />
+                  <span className="absolute left-0 top-1.5 bottom-1.5 w-1 rounded-r-full bg-primary-400 shadow-glow-primary" />
                 )}
                 <div className="relative shrink-0">
-                  <item.icon className={cn('w-4.5 h-4.5 transition-transform duration-200 group-hover:scale-110', isActive ? 'text-primary-600 dark:text-primary-400' : 'text-slate-400 dark:text-slate-400 group-hover:text-slate-700 dark:group-hover:text-slate-200')} />
+                  <item.icon className={cn('w-4.5 h-4.5 transition-transform duration-200 ease-out group-hover:scale-110', isActive ? 'text-primary-400' : 'text-slate-400 group-hover:text-white')} />
                   {item.to === '/inbox' && unreadCount > 0 && (
                     <span className="absolute -top-1.5 -right-2 min-w-4 h-4 px-1 bg-red-500 text-white text-[10px] rounded-full flex items-center justify-center font-bold shadow-xs">
                       {unreadCount > 9 ? '9+' : unreadCount}
@@ -119,20 +119,20 @@ export function Sidebar() {
       </nav>
 
       {/* Bottom User & Theme Dock */}
-      <div className={cn('p-3 space-y-2 border-t border-slate-100 dark:border-white/5 bg-slate-50/50 dark:bg-black/30')}>
+      <div className={cn('p-3 space-y-2 border-t border-white/[0.06] bg-[#05070d]')}>
         {/* Theme Toggle */}
         <button
           onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
           className={cn(
-            'flex items-center gap-3 px-3.5 py-2 rounded-xl text-xs font-semibold text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-white/5 hover:text-slate-900 dark:hover:text-white transition-all w-full cursor-pointer',
+            'flex items-center gap-3 px-3.5 py-2 rounded-xl text-xs font-semibold text-slate-400 hover:bg-white/[0.08] hover:text-white transition-all duration-200 ease-out w-full cursor-pointer',
             collapsed && 'justify-center px-2'
           )}
           aria-label="Toggle theme"
         >
           {theme === 'dark' ? (
-            <Sun className="w-4 h-4 text-amber-400 shrink-0" />
+            <Sun className="w-4 h-4 text-amber-400 shrink-0 transition-transform duration-300 hover:rotate-45" />
           ) : (
-            <Moon className="w-4 h-4 text-indigo-500 shrink-0" />
+            <Moon className="w-4 h-4 text-indigo-400 shrink-0 transition-transform duration-300 hover:-rotate-12" />
           )}
           {!collapsed && <span>{theme === 'dark' ? 'Light Theme' : 'Dark Theme'}</span>}
         </button>
@@ -141,7 +141,7 @@ export function Sidebar() {
         <NavLink
           to="/settings"
           className={cn(
-            'flex items-center gap-3 p-2.5 rounded-xl bg-white dark:bg-white/5 hover:bg-slate-100 dark:hover:bg-white/10 transition-all border border-slate-200/80 dark:border-white/5 shadow-2xs group cursor-pointer',
+            'flex items-center gap-3 p-2.5 rounded-xl bg-white/[0.04] hover:bg-white/[0.08] hover:border-white/10 transition-all duration-200 ease-out border border-white/[0.06] shadow-2xs group cursor-pointer',
             collapsed && 'justify-center p-2'
           )}
           title="Account Settings"
@@ -151,21 +151,21 @@ export function Sidebar() {
               <img
                 src={profile.avatar_url}
                 alt={profile.name}
-                className="w-8 h-8 rounded-xl object-cover ring-1 ring-slate-200 dark:ring-white/20 group-hover:ring-primary-500 transition-all"
+                className="w-8 h-8 rounded-xl object-cover ring-1 ring-white/20 group-hover:ring-primary-500 transition-all duration-200"
               />
             ) : (
               <div className="w-8 h-8 rounded-xl bg-gradient-to-tr from-primary-600 via-indigo-600 to-purple-600 flex items-center justify-center text-white font-bold text-xs shadow-xs">
                 {profile.name.split(' ').map(n => n[0]).join('').slice(0, 2)}
               </div>
             )}
-            <span className="absolute -bottom-0.5 -right-0.5 w-2.5 h-2.5 rounded-full bg-emerald-500 ring-2 ring-white dark:ring-[#0b0f19]" />
+            <span className="absolute -bottom-0.5 -right-0.5 w-2.5 h-2.5 rounded-full bg-emerald-500 ring-2 ring-[#070a13]" />
           </div>
           {!collapsed && (
             <div className="overflow-hidden min-w-0 flex-1">
-              <p className="text-slate-900 dark:text-white text-xs font-bold truncate group-hover:text-primary-600 dark:group-hover:text-primary-300 transition-colors">
+              <p className="text-white text-xs font-bold truncate group-hover:text-primary-300 transition-colors">
                 {profile.name}
               </p>
-              <p className="text-slate-500 dark:text-slate-400 text-[10px] truncate">
+              <p className="text-slate-400 text-[10px] truncate">
                 Pro Student OS
               </p>
             </div>
@@ -186,8 +186,8 @@ export function MobileNav() {
   return (
     <>
       {/* Bottom bar */}
-      <nav className="md:hidden fixed bottom-0 left-0 right-0 z-40 bg-white/90 dark:bg-slate-950/90 backdrop-blur-xl border-t border-slate-200/80 dark:border-slate-800/80 safe-area-bottom shadow-lg">
-        <div className="flex items-center justify-around py-1">
+      <nav className="md:hidden fixed bottom-0 left-0 right-0 z-40 bg-[#070a13]/95 backdrop-blur-2xl border-t border-white/[0.08] safe-area-bottom shadow-2xl">
+        <div className="flex items-center justify-around py-1.5">
           {MOBILE_MAIN.map(item => (
             <NavLink
               key={item.to}
@@ -196,10 +196,10 @@ export function MobileNav() {
               id={`mobile-${item.id}`}
               className={({ isActive }) =>
                 cn(
-                  'flex-1 flex flex-col items-center gap-1 py-2 px-1 text-xs font-medium transition-all select-none',
+                  'flex-1 flex flex-col items-center gap-1 py-1.5 px-1 text-xs font-medium transition-all duration-200 ease-out select-none',
                   isActive
-                    ? 'text-primary-600 dark:text-primary-400 font-bold scale-105'
-                    : 'text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200'
+                    ? 'text-primary-400 font-bold scale-105'
+                    : 'text-slate-400 hover:text-white'
                 )
               }
             >
@@ -210,7 +210,7 @@ export function MobileNav() {
           <button
             id="mobile-nav-more"
             onClick={() => setMenuOpen(v => !v)}
-            className="flex-1 flex flex-col items-center gap-1 py-2 px-1 text-xs font-medium text-slate-500 dark:text-slate-400"
+            className="flex-1 flex flex-col items-center gap-1 py-1.5 px-1 text-xs font-medium text-slate-400 hover:text-white transition-colors cursor-pointer"
           >
             <Menu className="w-5 h-5" />
             <span className="text-[10px]">More</span>
@@ -221,11 +221,11 @@ export function MobileNav() {
       {/* Mobile menu overlay */}
       {menuOpen && (
         <div className="md:hidden fixed inset-0 z-50">
-          <div className="absolute inset-0 bg-black/60 backdrop-blur-xs" onClick={() => setMenuOpen(false)} />
-          <div className="absolute bottom-0 left-0 right-0 bg-white dark:bg-slate-900 rounded-t-3xl p-5 border-t border-slate-200 dark:border-slate-800 animate-slide-up space-y-3">
-            <div className="flex items-center justify-between pb-2 border-b border-slate-200 dark:border-slate-800">
-              <p className="font-bold text-sm text-slate-900 dark:text-slate-100">All Navigation</p>
-              <button onClick={() => setMenuOpen(false)} className="p-1 rounded-lg text-slate-400 hover:text-slate-600 dark:hover:text-slate-200">
+          <div className="absolute inset-0 bg-black/70 backdrop-blur-sm transition-opacity duration-300" onClick={() => setMenuOpen(false)} />
+          <div className="absolute bottom-0 left-0 right-0 bg-[#070a13] rounded-t-3xl p-5 border-t border-white/[0.1] animate-slide-up space-y-3 shadow-2xl">
+            <div className="flex items-center justify-between pb-2 border-b border-white/[0.08]">
+              <p className="font-bold text-sm text-white">All Navigation</p>
+              <button onClick={() => setMenuOpen(false)} className="p-1.5 rounded-lg text-slate-400 hover:text-white hover:bg-white/[0.08] cursor-pointer">
                 <X className="w-5 h-5" />
               </button>
             </div>
@@ -239,12 +239,12 @@ export function MobileNav() {
                     cn(
                       'flex items-center gap-2.5 px-3.5 py-3 rounded-xl text-xs font-semibold transition-all',
                       isActive
-                        ? 'bg-primary-50 text-primary-700 dark:bg-primary-950/50 dark:text-primary-300 border border-primary-200 dark:border-primary-800'
-                        : 'text-slate-700 dark:text-slate-300 bg-slate-50 dark:bg-slate-800/60 border border-slate-200/60 dark:border-slate-700/60'
+                        ? 'bg-primary-500/20 text-white border border-primary-500/40 shadow-glow-primary/20'
+                        : 'text-slate-300 bg-white/[0.04] hover:bg-white/[0.08] hover:text-white border border-white/[0.06]'
                     )
                   }
                 >
-                  <item.icon className="w-4 h-4 text-primary-500" />
+                  <item.icon className="w-4 h-4 text-primary-400" />
                   {item.label}
                 </NavLink>
               ))}
